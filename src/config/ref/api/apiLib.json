@@ -1,0 +1,8 @@
+{
+  "vendors": [
+    {
+      "vendorName": "Atlassian",
+      "configFilePath": "src/config/ref/api/AtlassianApiLib.json"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "name": "Atlassian",
+  "product": [
+    {
+      "name": "jira",
+      "offer": "cloud",
+      "apiAccess": {
+        "domain": "JIRA_DOMAIN",
+        "user": "JIRA_LOGIN",
+        "secret": "JIRA_TOKEN"
+      },
+      "paginationModel": {
+        "offset-based": {
+          "startAt": 0,
+          "maxResults": 50
+        },
+        "cursor-based": {
+          "isLast": 0,
+          "nextCursor": "nextPagetoken"
+        }
+      },
+      "apiLib": [
+        {
+          "version": 3,
+          "timestamp": "ISO-8601",
+          "paginationModel": "cursor-based",
+          "endPoints": [
+            {
+              "name": "getIssues",
+              "callSign": "search",
+              "enabled": true,
+              "path": "/rest/api/3/search/jql",
+              "method": "GET",
+              "headers": {
+                "Authorization": "Basic",
+                "Accept": "application/json"
+              }
+            },
+            {
+              "name": "countIssues",
+              "callSign": "count",
+              "enabled": true,
+              "path": "",
+              "method": "POST",
+              "headers": {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Confluence",
+      "offer": "cloud"
+    }
+  ]
+}

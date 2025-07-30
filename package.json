@@ -1,0 +1,39 @@
+{
+  "name": "atlassian",
+  "version": "1.0.0",
+  "description": "A Node.js package for Atlassian integration",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "test": "jest",
+    "start": "ts-node src/index.ts",
+    "dev": "ts-node-dev --respawn src/index.ts",
+    "build": "npm run clean && tsc",
+    "lint": "eslint . --ext .ts",
+    "format": "prettier --write ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.0.13",
+    "@typescript-eslint/eslint-plugin": "^8.36.0",
+    "@typescript-eslint/parser": "^8.36.0",
+    "eslint": "^9.31.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-import": "^2.32.0",
+    "jest": "^30.0.4",
+    "prettier": "^3.6.2",
+    "ts-jest": "^29.4.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "csv-parse": "^6.0.0",
+    "dotenv": "^17.2.0",
+    "fast-xml-parser": "^5.2.5",
+    "zod": "^4.0.5"
+  }
+}
