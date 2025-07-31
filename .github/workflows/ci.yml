@@ -1,0 +1,39 @@
+name: CI
+
+# Déclenchement sur push et pull request vers la branche principale
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout du code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Installation de Node.js (ajustez la version selon votre tsconfig)
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # 3. Installation des dépendances
+      - name: Install dependencies
+        run: npm ci
+
+      # 4. Linting avec ESLint
+      - name: Run ESLint
+        run: npm run lint
+
+      # 5. Tests unitaires avec Jest
+      - name: Run tests
+        run: npm test -- --coverage
+
+      # 6. Compilation TypeScript
+      - name: Build
+        run: npm run build
