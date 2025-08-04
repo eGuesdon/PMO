@@ -1,0 +1,2 @@
+{"timestamp":"2025-08-04T12:02:16.734Z","actor":"test","event":"TEST_EVENT","resource":"res1","status":"SUCCESS","details":{"foo":"bar"}}
+{"timestamp":"2025-08-04T12:02:16.736Z","actor":"test2","event":"TEST_HMAC","resource":"res2","signature":"bbb3d992f404058c2b2e6d5372f60ccbb86b2817cf8ddcc3610bcc03aaa752e4"}

@@ -4,7 +4,7 @@ import { FileLoader, FileMetadata } from '../../core/utils/FileLoader';
 
 describe('FileLoader', () => {
   const fixturesDir = path.resolve(__dirname, 'fixtures');
-  const loader = new FileLoader(fixturesDir);
+  const loader = FileLoader.getInstance(fixturesDir);
   const testJson = 'test.json';
   const testTxt = 'test.txt';
 
