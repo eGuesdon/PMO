@@ -7,13 +7,13 @@ import * as path from 'path';
  * Structure d’un événement d’audit.
  */
 export interface AuditEvent {
-  timestamp: string;      // ISO 8601 UTC
-  actor: string;          // identifiant du service ou de l’utilisateur
-  event: string;          // type d’action (p.ex. "FILE_LOADED")
-  resource?: string;      // cible (chemin de fichier, URL, etc.)
-  status?: string;        // "SUCCESS" | "FAILURE"
-  details?: any;          // champ libre pour infos additionnelles
-  signature?: string;     // HMAC-SHA256 de la ligne JSONL (pour immuabilité)
+  timestamp: string; // ISO 8601 UTC
+  actor: string; // identifiant du service ou de l’utilisateur
+  event: string; // type d’action (p.ex. "FILE_LOADED")
+  resource?: string; // cible (chemin de fichier, URL, etc.)
+  status?: string; // "SUCCESS" | "FAILURE"
+  details?: any; // champ libre pour infos additionnelles
+  signature?: string; // HMAC-SHA256 de la ligne JSONL (pour immuabilité)
 }
 
 /**
@@ -65,11 +65,11 @@ export class AuditService {
    * @param transports Liste des transports à utiliser (ex. [new FileAuditTransport(...)])
    * @param hmacKey   Clé secrète pour générer la signature HMAC (optionnel)
    */
-  public static getInstance(
-    transports: AuditTransport[],
-    hmacKey?: string
-  ): AuditService {
+  public static getInstance(transports?: AuditTransport[], hmacKey?: string): AuditService {
     if (!AuditService.instance) {
+      if (!transports) {
+        throw new Error('AuditService must be initialized with transports');
+      }
       AuditService.instance = new AuditService(transports, hmacKey);
     }
     return AuditService.instance;
@@ -78,10 +78,12 @@ export class AuditService {
   /**
    * Enregistre un événement d’audit.
    */
-  public async log(event: Omit<AuditEvent, 'timestamp' | 'signature'> & {
-    timestamp?: never;
-    signature?: never;
-  }): Promise<void> {
+  public async log(
+    event: Omit<AuditEvent, 'timestamp' | 'signature'> & {
+      timestamp?: never;
+      signature?: never;
+    },
+  ): Promise<void> {
     const entry: AuditEvent = {
       timestamp: new Date().toISOString(),
       ...event,
@@ -95,12 +97,6 @@ export class AuditService {
     }
 
     // Envoi à tous les transports et attente de leur complétion
-    await Promise.all(
-      this.transports.map(t =>
-        t.log(entry).catch(err =>
-          console.error('AuditService transport error:', err)
-        )
-      )
-    );
+    await Promise.all(this.transports.map((t) => t.log(entry).catch((err) => console.error('AuditService transport error:', err))));
   }
 }
