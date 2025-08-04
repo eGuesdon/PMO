@@ -256,3 +256,29 @@
 {"timestamp":"2025-08-04T13:54:04.083Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
 {"timestamp":"2025-08-04T13:54:04.085Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"missing.json","status":"INIT"}
 {"timestamp":"2025-08-04T13:54:04.085Z","actor":"FileLoader","event":"FILE_LOAD_ERROR","resource":"missing.json","status":"FAILURE","details":"ENOENT: no such file or directory, stat '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/src/tests/unitTest/fixtures/missing.json'"}
+{"timestamp":"2025-08-04T14:25:50.142Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"config/api/apiLib.json","status":"INIT"}
+{"timestamp":"2025-08-04T14:25:50.143Z","actor":"FileLoader","event":"FILE_LOAD_ERROR","resource":"config/api/apiLib.json","status":"FAILURE","details":"ENOENT: no such file or directory, stat '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/config/api/apiLib.json'"}
+{"timestamp":"2025-08-04T14:26:19.944Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"src/config/api/apiLib.json","status":"INIT"}
+{"timestamp":"2025-08-04T14:26:19.946Z","actor":"FileLoader","event":"FILE_LOADED","resource":"src/config/api/apiLib.json","status":"SUCCESS","details":{"fingerprint":"f863ca4383eb2ff63c64c486ac15982f1bb929790d22db9eeecf0a12f88c1769"}}
+{"timestamp":"2025-08-04T14:26:21.982Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"src/config/api/apiLib.json","status":"INIT"}
+{"timestamp":"2025-08-04T14:26:21.983Z","actor":"FileLoader","event":"FILE_LOADED","resource":"src/config/api/apiLib.json","status":"SUCCESS","details":{"fingerprint":"f863ca4383eb2ff63c64c486ac15982f1bb929790d22db9eeecf0a12f88c1769"}}
+{"timestamp":"2025-08-04T14:26:27.131Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"src/config/api/apiLib.json","status":"INIT"}
+{"timestamp":"2025-08-04T14:26:27.132Z","actor":"FileLoader","event":"FILE_LOADED","resource":"src/config/api/apiLib.json","status":"SUCCESS","details":{"fingerprint":"f863ca4383eb2ff63c64c486ac15982f1bb929790d22db9eeecf0a12f88c1769"}}
+{"timestamp":"2025-08-04T14:26:30.051Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"src/config/api/apiLib.json","status":"INIT"}
+{"timestamp":"2025-08-04T14:26:30.052Z","actor":"FileLoader","event":"FILE_LOADED","resource":"src/config/api/apiLib.json","status":"SUCCESS","details":{"fingerprint":"f863ca4383eb2ff63c64c486ac15982f1bb929790d22db9eeecf0a12f88c1769"}}
+{"timestamp":"2025-08-04T14:26:59.957Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"src/config/api/apiLib.json","status":"INIT"}
+{"timestamp":"2025-08-04T14:26:59.958Z","actor":"FileLoader","event":"FILE_LOADED","resource":"src/config/api/apiLib.json","status":"SUCCESS","details":{"fingerprint":"f863ca4383eb2ff63c64c486ac15982f1bb929790d22db9eeecf0a12f88c1769"}}
+{"timestamp":"2025-08-04T14:27:20.438Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"src/config/api/apiLib.json","status":"INIT"}
+{"timestamp":"2025-08-04T14:27:20.439Z","actor":"FileLoader","event":"FILE_LOADED","resource":"src/config/api/apiLib.json","status":"SUCCESS","details":{"fingerprint":"f863ca4383eb2ff63c64c486ac15982f1bb929790d22db9eeecf0a12f88c1769"}}
+{"timestamp":"2025-08-04T14:27:55.355Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"./config/api/apiLib.json","status":"INIT"}
+{"timestamp":"2025-08-04T14:27:55.356Z","actor":"FileLoader","event":"FILE_LOAD_ERROR","resource":"./config/api/apiLib.json","status":"FAILURE","details":"ENOENT: no such file or directory, stat '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/config/api/apiLib.json'"}
+{"timestamp":"2025-08-04T14:28:04.254Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"src/config/api/apiLib.json","status":"INIT"}
+{"timestamp":"2025-08-04T14:28:04.255Z","actor":"FileLoader","event":"FILE_LOADED","resource":"src/config/api/apiLib.json","status":"SUCCESS","details":{"fingerprint":"f863ca4383eb2ff63c64c486ac15982f1bb929790d22db9eeecf0a12f88c1769"}}
+{"timestamp":"2025-08-04T14:29:19.510Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"src/config/api/apiLib.json","status":"INIT"}
+{"timestamp":"2025-08-04T14:29:19.514Z","actor":"FileLoader","event":"FILE_LOADED","resource":"src/config/api/apiLib.json","status":"SUCCESS","details":{"fingerprint":"f863ca4383eb2ff63c64c486ac15982f1bb929790d22db9eeecf0a12f88c1769"}}
+{"timestamp":"2025-08-04T14:33:50.789Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"src/config/api/apiLib.json","status":"INIT"}
+{"timestamp":"2025-08-04T14:33:50.793Z","actor":"FileLoader","event":"FILE_LOADED","resource":"src/config/api/apiLib.json","status":"SUCCESS","details":{"fingerprint":"f863ca4383eb2ff63c64c486ac15982f1bb929790d22db9eeecf0a12f88c1769"}}
+{"timestamp":"2025-08-04T21:56:59.525Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"src/config/api/apiLib.json","status":"INIT"}
+{"timestamp":"2025-08-04T21:56:59.529Z","actor":"FileLoader","event":"FILE_LOADED","resource":"src/config/api/apiLib.json","status":"SUCCESS","details":{"fingerprint":"f863ca4383eb2ff63c64c486ac15982f1bb929790d22db9eeecf0a12f88c1769"}}
+{"timestamp":"2025-08-04T21:57:38.001Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"src/config/api/apiLib.json","status":"INIT"}
+{"timestamp":"2025-08-04T21:57:38.002Z","actor":"FileLoader","event":"FILE_LOADED","resource":"src/config/api/apiLib.json","status":"SUCCESS","details":{"fingerprint":"f863ca4383eb2ff63c64c486ac15982f1bb929790d22db9eeecf0a12f88c1769"}}

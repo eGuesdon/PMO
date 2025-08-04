@@ -10,7 +10,7 @@ const jiraConfigSchema = z.object({
   API_LIB: z.string(),
 });
 
-const parsed = configSchema.safeParse(process.env);
+const parsed = jiraConfigSchema.safeParse(process.env);
 
 if (!parsed.success) {
   console.error('❌ Configuration invalide :', parsed.error.format());

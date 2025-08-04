@@ -5,15 +5,15 @@
   "main": "dist/index.js",
   "type": "commonjs",
   "scripts": {
-    "clean": "rm -rf dist",
     "test": "jest",
-    "start": "ts-node src/index.ts",
     "dev": "ts-node-dev --respawn src/index.ts",
-    "build": "npm run clean && tsc",
+    "start": "ts-node src/index.ts",
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "format:check": "prettier --check .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "clean": "rm -rf dist",
+    "build": "npm run clean && tsc"
   },
   "keywords": [],
   "author": "",
@@ -25,7 +25,7 @@
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "@types/lru-cache": "^7.10.9",
-    "@types/node": "^24.0.13",
+    "@types/node": "^24.2.0",
     "@typescript-eslint/eslint-plugin": "^8.36.0",
     "@typescript-eslint/parser": "^8.36.0",
     "eslint": "^9.31.0",
@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "csv-parse": "^6.0.0",
-    "dotenv": "^17.2.0",
+    "dotenv": "^17.2.1",
     "fast-xml-parser": "^5.2.5",
     "lru-cache": "^11.1.0",
     "zod": "^4.0.5"

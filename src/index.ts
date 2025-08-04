@@ -7,7 +7,7 @@ async function main() {
 
   try {
     // Charge le fichier relatif à la racine du projet
-    const metadata = await loader.load('config/api/apiLib.json');
+    const metadata = await loader.load('src/config/api/apiLib.json');
 
     console.log('📄 Fichier chargé :', metadata.name);
     console.log('📁 Chemin absolu :', metadata.path);
