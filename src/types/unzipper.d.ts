@@ -1,10 +1,20 @@
-// src/types/unzipper.d.ts
+// src/@types/unzipper/index.d.ts
 declare module 'unzipper' {
   import { Transform, Writable } from 'stream';
-  const unzipper: {
-    Parse(): Transform;
-    Extract(opts: { path: string }): Writable;
-    // Add other methods if needed
-  };
-  export default unzipper;
+
+  export function Parse(): Transform;
+  export function Extract(opts: { path: string }): Writable;
+
+  export namespace Open {
+    function buffer(data: Buffer): Promise<OpenDirectory>;
+  }
+
+  export interface OpenDirectory {
+    files: Array<{
+      path: string;
+      type: 'Directory' | 'File';
+      compressedSize: number;
+      buffer(): Promise<Buffer>;
+    }>;
+  }
 }

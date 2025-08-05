@@ -21,7 +21,7 @@ async function main() {
   } catch (err: any) {
     console.error('⚠️  Impossible de charger le fichier :', err.message);
   }
-  //streamDemo();
+  // streamDemo();
   await zipDemo();
 }
 
@@ -45,10 +45,48 @@ async function streamDemo() {
   }
 }
 
+async function zipLocalDemo() {
+  const loader = FileLoader.getInstance();
+  // Chemin relatif vers votre ZIP local, depuis le baseDir de FileLoader
+  const localZipPath = 'src/202507.zip';
+
+  console.log(`🚀 Début du streaming et décompression du ZIP local : ${localZipPath}`);
+  try {
+    // Charge le flux du ZIP local
+    const zipStream: Readable = await loader.loadAsStream(localZipPath);
+    let sawFirst = false;
+
+    zipStream.once('data', () => {
+      console.log('▶️ Premier chunk binaire reçu du ZIP local');
+      sawFirst = true;
+    });
+    zipStream.once('end', () => {
+      console.log('🚩 Fin du flux du ZIP local');
+    });
+
+    // Vérification du type de stream
+    console.log('→ zipStream instanceof Readable ?', zipStream instanceof Readable);
+
+    // Décompression et affichage des entrées
+    for await (const entry of parseZIPStream(zipStream)) {
+      console.log(`📄 Entrée: ${entry.path} (${entry.type}), taille: ${entry.size} octets`);
+      // Affichage d’un aperçu du contenu (100 premiers caractères)
+      // console.log('   → Contenu (aperçu) :', entry.content.toString('utf-8').slice(0, 100).replace(/\r?\n/g, '\\n'), '…');
+    }
+
+    if (!sawFirst) {
+      console.warn('⚠️ Aucun chunk reçu : le flux ZIP semble vide ou mal lu.');
+    }
+  } catch (err: any) {
+    console.error('⚠️ Erreur lors du streaming/décompression du ZIP local :', err.message);
+  }
+}
+
 async function zipDemo() {
   const loader = FileLoader.getInstance();
   // ZIP standard GitHub d’un repo public
-  const zipUrl = 'https://codeload.github.com/eGuesdon/PMO/zip/main';
+  // URL « brute » qui retourne vraiment un .zip, pas une page HTML
+  const zipUrl = 'https://raw.githubusercontent.com/eGuesdon/PMO/main/src/202507.zip';
 
   console.log(`🚀 Streaming et décompression de ${zipUrl}`);
   const zipStream = await loader.loadAsStream(zipUrl);
@@ -67,7 +105,7 @@ async function zipDemo() {
   for await (const entry of parseZIPStream(zipStream)) {
     console.log(`📄 Entrée: ${entry.path} (${entry.type}), taille: ${entry.size} octets`);
     // Si vous voulez lire le contenu :
-    console.log('   → contenu:', entry.content.toString('utf-8').slice(0, 100), '…');
+    // console.log('   → contenu:', entry.content.toString('utf-8').slice(0, 100), '…');
   }
 }
 

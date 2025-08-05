@@ -13,29 +13,35 @@ export interface ZipEntry {
  * Parcourt un flux ZIP et renvoie un AsyncIterable
  * d’entrées (fichiers/dossiers), avec leur contenu en Buffer.
  *
- * @param zipStream un Readable obtenue par loadAsStream()
+ * Cette version lit d'abord tout le flux en mémoire, puis
+ * ouvre l'archive via unzipper.Open.buffer pour en extraire
+ * toutes les entrées.
+ *
+ * @param zipStream flux binaire du ZIP
  */
 export async function* parseZIPStream(zipStream: Readable): AsyncIterable<ZipEntry> {
-  // pipe le Readable HTTP/local dans unzipper
-  const directory = zipStream.pipe(unzipper.Parse());
+  // 1) Lire tout le flux en mémoire
+  const chunks: Buffer[] = [];
+  for await (const chunk of zipStream) {
+    chunks.push(chunk as Buffer);
+  }
+  const buffer = Buffer.concat(chunks);
 
-  for await (const entry of directory) {
-    const { path: entryPath, type, size } = entry;
-    if (type === 'Directory') {
-      // on rejette le buffer pour un dossier
+  // 2) Ouvrir l'archive depuis le Buffer
+  const directory = await unzipper.Open.buffer(buffer);
+
+  // 3) Parcourir les fichiers/dossiers
+  for (const entry of directory.files) {
+    const { path: entryPath, type, compressedSize: size } = entry;
+    if (entry.type === 'Directory') {
       yield { path: entryPath, type, size, content: Buffer.alloc(0) };
-      entry.autodrain();
     } else {
-      // on lit tout le contenu du fichier
-      const chunks: Buffer[] = [];
-      for await (const chunk of entry as AsyncIterable<Buffer>) {
-        chunks.push(chunk);
-      }
+      const contentBuffer = await entry.buffer();
       yield {
         path: entryPath,
         type,
         size,
-        content: Buffer.concat(chunks),
+        content: contentBuffer,
       };
     }
   }
