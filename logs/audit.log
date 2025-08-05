@@ -929,3 +929,410 @@
 {"timestamp":"2025-08-05T12:36:46.236Z","actor":"FileLoader","event":"FILE_LOADED","resource":"audit_valid.json","status":"SUCCESS","details":{"fingerprint":"93a23971a914e5eacbf0a8d25154cda309c3c1c72fbb9914d47c60f3cb681588"}}
 {"timestamp":"2025-08-05T12:36:46.238Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"audit_invalid.json","status":"INIT"}
 {"timestamp":"2025-08-05T12:36:46.238Z","actor":"FileLoader","event":"FILE_LOAD_ERROR","resource":"audit_invalid.json","status":"FAILURE","details":"ENOENT: no such file or directory, stat '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/src/tests/unitTest/fixtures/audit_invalid.json'"}
+{"timestamp":"2025-08-05T12:52:17.681Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"audit_valid.json","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.684Z","actor":"FileLoader","event":"FILE_LOADED","resource":"audit_valid.json","status":"SUCCESS","details":{"fingerprint":"93a23971a914e5eacbf0a8d25154cda309c3c1c72fbb9914d47c60f3cb681588"}}
+{"timestamp":"2025-08-05T12:52:17.687Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"audit_invalid.json","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.687Z","actor":"FileLoader","event":"FILE_LOAD_ERROR","resource":"audit_invalid.json","status":"FAILURE","details":"ENOENT: no such file or directory, stat '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/src/tests/unitTest/fixtures/audit_invalid.json'"}
+{"timestamp":"2025-08-05T12:52:17.705Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.707Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T12:52:17.722Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"stream.txt","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.726Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_END","resource":"stream.txt","status":"SUCCESS"}
+{"timestamp":"2025-08-05T12:52:17.731Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"stream.txt","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.732Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_END","resource":"stream.txt","status":"SUCCESS"}
+{"timestamp":"2025-08-05T12:52:17.734Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"nope.txt","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.711Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"missing.json","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.711Z","actor":"FileLoader","event":"FILE_LOAD_ERROR","resource":"missing.json","status":"FAILURE","details":"ENOENT: no such file or directory, stat '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/src/tests/unitTest/fixtures/missing.json'"}
+{"timestamp":"2025-08-05T12:52:17.734Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"nope.txt","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/src/tests/unitTest/fixtures/nope.txt'"}
+{"timestamp":"2025-08-05T12:52:17.759Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"reload.txt","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.763Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.764Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T12:52:17.764Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.759Z","actor":"FileLoader","event":"FILE_LOADED","resource":"reload.txt","status":"SUCCESS","details":{"fingerprint":"ac1b5c0961a7269b6a053ee64276ed0e20a7f48aefb9f67519539d23aaf10149"}}
+{"timestamp":"2025-08-05T12:52:17.759Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"reload.txt","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.765Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.766Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T12:57:17.760Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"reload.txt","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.766Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.767Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T12:52:17.767Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"other.json","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.767Z","actor":"FileLoader","event":"FILE_LOADED","resource":"other.json","status":"SUCCESS","details":{"fingerprint":"c450c726579d41e1daa46158c07c1ed4a81dddc5e8dcb96ad729bca95e0e6fac"}}
+{"timestamp":"2025-08-05T12:52:17.767Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.768Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T12:52:17.768Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"other.json","status":"INIT"}
+{"timestamp":"2025-08-05T12:57:17.760Z","actor":"FileLoader","event":"FILE_LOADED","resource":"reload.txt","status":"SUCCESS","details":{"fingerprint":"ac1b5c0961a7269b6a053ee64276ed0e20a7f48aefb9f67519539d23aaf10149"}}
+{"timestamp":"2025-08-05T12:52:17.768Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"reload.txt","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.768Z","actor":"FileLoader","event":"FILE_LOADED","resource":"reload.txt","status":"SUCCESS","details":{"fingerprint":"ac1b5c0961a7269b6a053ee64276ed0e20a7f48aefb9f67519539d23aaf10149"}}
+{"timestamp":"2025-08-05T12:52:17.770Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.768Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"reload.txt","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.770Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T12:52:17.772Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.txt","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.768Z","actor":"FileLoader","event":"FILE_LOADED","resource":"reload.txt","status":"SUCCESS","details":{"fingerprint":"b80012851cf027c6d8adda328907d400c95773958fb4fec3e544a02cd5eeab0e"}}
+{"timestamp":"2025-08-05T12:52:17.775Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.txt","status":"SUCCESS","details":{"fingerprint":"b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9"}}
+{"timestamp":"2025-08-05T12:52:17.775Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"nonexistent.ext","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.775Z","actor":"FileLoader","event":"FILE_LOAD_ERROR","resource":"nonexistent.ext","status":"FAILURE","details":"ENOENT: no such file or directory, stat '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/dist/tests/unitTest/fixtures/nonexistent.ext'"}
+{"timestamp":"2025-08-05T12:52:17.805Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.807Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T12:52:17.808Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.809Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.810Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T12:52:17.812Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.812Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T12:52:17.812Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.812Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"other.json","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.813Z","actor":"FileLoader","event":"FILE_LOADED","resource":"other.json","status":"SUCCESS","details":{"fingerprint":"c450c726579d41e1daa46158c07c1ed4a81dddc5e8dcb96ad729bca95e0e6fac"}}
+{"timestamp":"2025-08-05T12:52:17.814Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.814Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T12:52:17.814Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"other.json","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.813Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.814Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T12:52:17.815Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T12:52:17.818Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.txt","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.819Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.txt","status":"SUCCESS","details":{"fingerprint":"b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9"}}
+{"timestamp":"2025-08-05T12:52:17.815Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"missing.json","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.817Z","actor":"FileLoader","event":"FILE_LOAD_ERROR","resource":"missing.json","status":"FAILURE","details":"ENOENT: no such file or directory, stat '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/dist/tests/unitTest/fixtures/missing.json'"}
+{"timestamp":"2025-08-05T12:52:17.826Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"foo.txt","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.829Z","actor":"FileLoader","event":"FILE_LOADED","resource":"foo.txt","status":"SUCCESS","details":{"fingerprint":"ac1b5c0961a7269b6a053ee64276ed0e20a7f48aefb9f67519539d23aaf10149"}}
+{"timestamp":"2025-08-05T12:52:17.820Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"nonexistent.ext","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.821Z","actor":"FileLoader","event":"FILE_LOAD_ERROR","resource":"nonexistent.ext","status":"FAILURE","details":"ENOENT: no such file or directory, stat '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/src/tests/unitTest/fixtures/nonexistent.ext'"}
+{"timestamp":"2025-08-05T12:52:17.830Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"foo.txt","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.831Z","actor":"FileLoader","event":"FILE_LOADED","resource":"foo.txt","status":"SUCCESS","details":{"fingerprint":"d67e2e944994496c8d8ec76eed0cf9f09679448d584b532bebf941852a37f5ed"}}
+{"timestamp":"2025-08-05T12:52:17.834Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"foo.txt","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.835Z","actor":"FileLoader","event":"FILE_LOADED","resource":"foo.txt","status":"SUCCESS","details":{"fingerprint":"d67e2e944994496c8d8ec76eed0cf9f09679448d584b532bebf941852a37f5ed"}}
+{"timestamp":"2025-08-05T12:52:17.835Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"foo.txt","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.887Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"bad.json","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.887Z","actor":"FileLoader","event":"FILE_LOADED","resource":"bad.json","status":"SUCCESS","details":{"fingerprint":"b6cf81a8432c92a3b45bb02e07990055d764b9fc76991a5924a994ea66496a77"}}
+{"timestamp":"2025-08-05T12:52:17.888Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"bad.csv","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.889Z","actor":"FileLoader","event":"FILE_LOADED","resource":"bad.csv","status":"SUCCESS","details":{"fingerprint":"08d13e84796370f80c6f3bd52710c8ac1e4ca194226ed70f422e22a3120f76e7"}}
+{"timestamp":"2025-08-05T12:52:17.889Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"bad.xml","status":"INIT"}
+{"timestamp":"2025-08-05T12:52:17.890Z","actor":"FileLoader","event":"FILE_LOADED","resource":"bad.xml","status":"SUCCESS","details":{"fingerprint":"2d6c4a09a5f59b76d95fddfbe63fd578624a8c9017adb7e62968fcd9ece43043"}}
+{"timestamp":"2025-08-05T13:07:31.759Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"stream.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:31.761Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"bad.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:31.764Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_END","resource":"stream.txt","status":"SUCCESS"}
+{"timestamp":"2025-08-05T13:07:31.763Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"reload.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:31.766Z","actor":"FileLoader","event":"FILE_LOADED","resource":"bad.json","status":"SUCCESS","details":{"fingerprint":"b6cf81a8432c92a3b45bb02e07990055d764b9fc76991a5924a994ea66496a77"}}
+{"timestamp":"2025-08-05T13:07:31.767Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"bad.csv","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:31.767Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"foo.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:31.768Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"stream.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:31.763Z","actor":"FileLoader","event":"FILE_LOADED","resource":"reload.txt","status":"SUCCESS","details":{"fingerprint":"ac1b5c0961a7269b6a053ee64276ed0e20a7f48aefb9f67519539d23aaf10149"}}
+{"timestamp":"2025-08-05T13:07:31.763Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"reload.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:31.769Z","actor":"FileLoader","event":"FILE_LOADED","resource":"foo.txt","status":"SUCCESS","details":{"fingerprint":"ac1b5c0961a7269b6a053ee64276ed0e20a7f48aefb9f67519539d23aaf10149"}}
+{"timestamp":"2025-08-05T13:12:31.764Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"reload.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:31.769Z","actor":"FileLoader","event":"FILE_LOADED","resource":"bad.csv","status":"SUCCESS","details":{"fingerprint":"08d13e84796370f80c6f3bd52710c8ac1e4ca194226ed70f422e22a3120f76e7"}}
+{"timestamp":"2025-08-05T13:07:31.770Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"bad.xml","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:31.769Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_END","resource":"stream.txt","status":"SUCCESS"}
+{"timestamp":"2025-08-05T13:07:31.771Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"nope.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:12:31.764Z","actor":"FileLoader","event":"FILE_LOADED","resource":"reload.txt","status":"SUCCESS","details":{"fingerprint":"ac1b5c0961a7269b6a053ee64276ed0e20a7f48aefb9f67519539d23aaf10149"}}
+{"timestamp":"2025-08-05T13:07:31.770Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"foo.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:31.771Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"reload.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:31.771Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"nope.txt","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/dist/tests/unitTest/fixtures/nope.txt'"}
+{"timestamp":"2025-08-05T13:07:31.772Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"audit_valid.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:31.771Z","actor":"FileLoader","event":"FILE_LOADED","resource":"reload.txt","status":"SUCCESS","details":{"fingerprint":"ac1b5c0961a7269b6a053ee64276ed0e20a7f48aefb9f67519539d23aaf10149"}}
+{"timestamp":"2025-08-05T13:07:31.772Z","actor":"FileLoader","event":"FILE_LOADED","resource":"bad.xml","status":"SUCCESS","details":{"fingerprint":"2d6c4a09a5f59b76d95fddfbe63fd578624a8c9017adb7e62968fcd9ece43043"}}
+{"timestamp":"2025-08-05T13:07:31.771Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"reload.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:31.771Z","actor":"FileLoader","event":"FILE_LOADED","resource":"reload.txt","status":"SUCCESS","details":{"fingerprint":"b80012851cf027c6d8adda328907d400c95773958fb4fec3e544a02cd5eeab0e"}}
+{"timestamp":"2025-08-05T13:07:31.775Z","actor":"FileLoader","event":"FILE_LOADED","resource":"audit_valid.json","status":"SUCCESS","details":{"fingerprint":"93a23971a914e5eacbf0a8d25154cda309c3c1c72fbb9914d47c60f3cb681588"}}
+{"timestamp":"2025-08-05T13:07:31.781Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"audit_invalid.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:31.781Z","actor":"FileLoader","event":"FILE_LOADED","resource":"foo.txt","status":"SUCCESS","details":{"fingerprint":"d67e2e944994496c8d8ec76eed0cf9f09679448d584b532bebf941852a37f5ed"}}
+{"timestamp":"2025-08-05T13:07:31.783Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"foo.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:31.783Z","actor":"FileLoader","event":"FILE_LOADED","resource":"foo.txt","status":"SUCCESS","details":{"fingerprint":"d67e2e944994496c8d8ec76eed0cf9f09679448d584b532bebf941852a37f5ed"}}
+{"timestamp":"2025-08-05T13:07:31.783Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"foo.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:31.782Z","actor":"FileLoader","event":"FILE_LOAD_ERROR","resource":"audit_invalid.json","status":"FAILURE","details":"ENOENT: no such file or directory, stat '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/dist/tests/unitTest/fixtures/audit_invalid.json'"}
+{"timestamp":"2025-08-05T13:07:34.701Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"foo.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.702Z","actor":"FileLoader","event":"FILE_LOADED","resource":"foo.txt","status":"SUCCESS","details":{"fingerprint":"ac1b5c0961a7269b6a053ee64276ed0e20a7f48aefb9f67519539d23aaf10149"}}
+{"timestamp":"2025-08-05T13:07:34.712Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"foo.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.713Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"reload.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.715Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.713Z","actor":"FileLoader","event":"FILE_LOADED","resource":"reload.txt","status":"SUCCESS","details":{"fingerprint":"ac1b5c0961a7269b6a053ee64276ed0e20a7f48aefb9f67519539d23aaf10149"}}
+{"timestamp":"2025-08-05T13:07:34.713Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"reload.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.718Z","actor":"FileLoader","event":"FILE_LOADED","resource":"foo.txt","status":"SUCCESS","details":{"fingerprint":"d67e2e944994496c8d8ec76eed0cf9f09679448d584b532bebf941852a37f5ed"}}
+{"timestamp":"2025-08-05T13:07:34.719Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.718Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T13:07:34.719Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"foo.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.719Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"missing.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:12:34.714Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"reload.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.716Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"stream.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.720Z","actor":"FileLoader","event":"FILE_LOADED","resource":"foo.txt","status":"SUCCESS","details":{"fingerprint":"d67e2e944994496c8d8ec76eed0cf9f09679448d584b532bebf941852a37f5ed"}}
+{"timestamp":"2025-08-05T13:12:34.714Z","actor":"FileLoader","event":"FILE_LOADED","resource":"reload.txt","status":"SUCCESS","details":{"fingerprint":"ac1b5c0961a7269b6a053ee64276ed0e20a7f48aefb9f67519539d23aaf10149"}}
+{"timestamp":"2025-08-05T13:07:34.721Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"foo.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.721Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"reload.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.722Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"audit_valid.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.722Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_END","resource":"stream.txt","status":"SUCCESS"}
+{"timestamp":"2025-08-05T13:07:34.721Z","actor":"FileLoader","event":"FILE_LOADED","resource":"reload.txt","status":"SUCCESS","details":{"fingerprint":"ac1b5c0961a7269b6a053ee64276ed0e20a7f48aefb9f67519539d23aaf10149"}}
+{"timestamp":"2025-08-05T13:07:34.720Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}}
+{"timestamp":"2025-08-05T13:07:34.723Z","actor":"FileLoader","event":"FILE_LOADED","resource":"audit_valid.json","status":"SUCCESS","details":{"fingerprint":"93a23971a914e5eacbf0a8d25154cda309c3c1c72fbb9914d47c60f3cb681588"}}
+{"timestamp":"2025-08-05T13:07:34.724Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.721Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"reload.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.725Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"stream.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.720Z","actor":"FileLoader","event":"FILE_LOAD_ERROR","resource":"missing.json","status":"FAILURE","details":"ENOENT: no such file or directory, stat '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/src/tests/unitTest/fixtures/missing.json'"}
+{"timestamp":"2025-08-05T13:07:34.724Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.726Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.txt","status":"SUCCESS","details":{"fingerprint":"b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9"}}
+{"timestamp":"2025-08-05T13:07:34.726Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_END","resource":"stream.txt","status":"SUCCESS"}
+{"timestamp":"2025-08-05T13:07:34.729Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"nope.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.721Z","actor":"FileLoader","event":"FILE_LOADED","resource":"reload.txt","status":"SUCCESS","details":{"fingerprint":"b80012851cf027c6d8adda328907d400c95773958fb4fec3e544a02cd5eeab0e"}}
+{"timestamp":"2025-08-05T13:07:34.730Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"nope.txt","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/src/tests/unitTest/fixtures/nope.txt'"}
+{"timestamp":"2025-08-05T13:07:34.732Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T13:07:34.733Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.725Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"audit_invalid.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.725Z","actor":"FileLoader","event":"FILE_LOAD_ERROR","resource":"audit_invalid.json","status":"FAILURE","details":"ENOENT: no such file or directory, stat '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/src/tests/unitTest/fixtures/audit_invalid.json'"}
+{"timestamp":"2025-08-05T13:07:34.736Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.738Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T13:07:34.740Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.742Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T13:07:34.742Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"other.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.727Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"nonexistent.ext","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.748Z","actor":"FileLoader","event":"FILE_LOADED","resource":"other.json","status":"SUCCESS","details":{"fingerprint":"c450c726579d41e1daa46158c07c1ed4a81dddc5e8dcb96ad729bca95e0e6fac"}}
+{"timestamp":"2025-08-05T13:07:34.748Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.750Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T13:07:34.750Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"other.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.728Z","actor":"FileLoader","event":"FILE_LOAD_ERROR","resource":"nonexistent.ext","status":"FAILURE","details":"ENOENT: no such file or directory, stat '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/src/tests/unitTest/fixtures/nonexistent.ext'"}
+{"timestamp":"2025-08-05T13:07:34.789Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.791Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T13:07:34.793Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.793Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"missing.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.795Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.793Z","actor":"FileLoader","event":"FILE_LOAD_ERROR","resource":"missing.json","status":"FAILURE","details":"ENOENT: no such file or directory, stat '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/dist/tests/unitTest/fixtures/missing.json'"}
+{"timestamp":"2025-08-05T13:07:34.802Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T13:07:34.805Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.806Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.805Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T13:07:34.807Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.808Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T13:07:34.808Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.808Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.txt","status":"SUCCESS","details":{"fingerprint":"b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9"}}
+{"timestamp":"2025-08-05T13:07:34.809Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"nonexistent.ext","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.809Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T13:07:34.809Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"other.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.810Z","actor":"FileLoader","event":"FILE_LOADED","resource":"other.json","status":"SUCCESS","details":{"fingerprint":"c450c726579d41e1daa46158c07c1ed4a81dddc5e8dcb96ad729bca95e0e6fac"}}
+{"timestamp":"2025-08-05T13:07:34.810Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.809Z","actor":"FileLoader","event":"FILE_LOAD_ERROR","resource":"nonexistent.ext","status":"FAILURE","details":"ENOENT: no such file or directory, stat '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/dist/tests/unitTest/fixtures/nonexistent.ext'"}
+{"timestamp":"2025-08-05T13:07:34.812Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"other.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:34.812Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T13:07:35.002Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"bad.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:35.002Z","actor":"FileLoader","event":"FILE_LOADED","resource":"bad.json","status":"SUCCESS","details":{"fingerprint":"b6cf81a8432c92a3b45bb02e07990055d764b9fc76991a5924a994ea66496a77"}}
+{"timestamp":"2025-08-05T13:07:35.002Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"bad.csv","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:35.004Z","actor":"FileLoader","event":"FILE_LOADED","resource":"bad.csv","status":"SUCCESS","details":{"fingerprint":"08d13e84796370f80c6f3bd52710c8ac1e4ca194226ed70f422e22a3120f76e7"}}
+{"timestamp":"2025-08-05T13:07:35.004Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"bad.xml","status":"INIT"}
+{"timestamp":"2025-08-05T13:07:35.005Z","actor":"FileLoader","event":"FILE_LOADED","resource":"bad.xml","status":"SUCCESS","details":{"fingerprint":"2d6c4a09a5f59b76d95fddfbe63fd578624a8c9017adb7e62968fcd9ece43043"}}
+{"timestamp":"2025-08-05T13:13:31.779Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:31.796Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T13:13:31.797Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:31.802Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:31.803Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T13:13:31.803Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"other.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:31.805Z","actor":"FileLoader","event":"FILE_LOADED","resource":"other.json","status":"SUCCESS","details":{"fingerprint":"c450c726579d41e1daa46158c07c1ed4a81dddc5e8dcb96ad729bca95e0e6fac"}}
+{"timestamp":"2025-08-05T13:13:31.806Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:31.995Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:31.995Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"stream.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:31.999Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_END","resource":"stream.txt","status":"SUCCESS"}
+{"timestamp":"2025-08-05T13:13:31.997Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T13:13:32.002Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"stream.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.002Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_END","resource":"stream.txt","status":"SUCCESS"}
+{"timestamp":"2025-08-05T13:13:32.005Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"nope.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.001Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"missing.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.001Z","actor":"FileLoader","event":"FILE_LOAD_ERROR","resource":"missing.json","status":"FAILURE","details":"ENOENT: no such file or directory, stat '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/src/tests/unitTest/fixtures/missing.json'"}
+{"timestamp":"2025-08-05T13:13:32.006Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"nope.txt","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/src/tests/unitTest/fixtures/nope.txt'"}
+{"timestamp":"2025-08-05T13:13:32.024Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.027Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T13:13:32.030Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.029Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"foo.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.031Z","actor":"FileLoader","event":"FILE_LOADED","resource":"foo.txt","status":"SUCCESS","details":{"fingerprint":"ac1b5c0961a7269b6a053ee64276ed0e20a7f48aefb9f67519539d23aaf10149"}}
+{"timestamp":"2025-08-05T13:13:32.031Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.txt","status":"SUCCESS","details":{"fingerprint":"b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9"}}
+{"timestamp":"2025-08-05T13:13:32.031Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"nonexistent.ext","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.032Z","actor":"FileLoader","event":"FILE_LOAD_ERROR","resource":"nonexistent.ext","status":"FAILURE","details":"ENOENT: no such file or directory, stat '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/src/tests/unitTest/fixtures/nonexistent.ext'"}
+{"timestamp":"2025-08-05T13:13:32.032Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"foo.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.041Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"foo.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.043Z","actor":"FileLoader","event":"FILE_LOADED","resource":"foo.txt","status":"SUCCESS","details":{"fingerprint":"d67e2e944994496c8d8ec76eed0cf9f09679448d584b532bebf941852a37f5ed"}}
+{"timestamp":"2025-08-05T13:13:32.044Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"foo.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.047Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"reload.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.047Z","actor":"FileLoader","event":"FILE_LOADED","resource":"reload.txt","status":"SUCCESS","details":{"fingerprint":"ac1b5c0961a7269b6a053ee64276ed0e20a7f48aefb9f67519539d23aaf10149"}}
+{"timestamp":"2025-08-05T13:13:32.047Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"reload.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.060Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"reload.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.069Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"reload.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.072Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"stream.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.069Z","actor":"FileLoader","event":"FILE_LOADED","resource":"reload.txt","status":"SUCCESS","details":{"fingerprint":"ac1b5c0961a7269b6a053ee64276ed0e20a7f48aefb9f67519539d23aaf10149"}}
+{"timestamp":"2025-08-05T13:13:32.069Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"reload.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:18:32.070Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"reload.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.075Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_END","resource":"stream.txt","status":"SUCCESS"}
+{"timestamp":"2025-08-05T13:18:32.070Z","actor":"FileLoader","event":"FILE_LOADED","resource":"reload.txt","status":"SUCCESS","details":{"fingerprint":"ac1b5c0961a7269b6a053ee64276ed0e20a7f48aefb9f67519539d23aaf10149"}}
+{"timestamp":"2025-08-05T13:13:32.076Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"reload.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.077Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"stream.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.076Z","actor":"FileLoader","event":"FILE_LOADED","resource":"reload.txt","status":"SUCCESS","details":{"fingerprint":"ac1b5c0961a7269b6a053ee64276ed0e20a7f48aefb9f67519539d23aaf10149"}}
+{"timestamp":"2025-08-05T13:13:32.076Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"reload.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.077Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_END","resource":"stream.txt","status":"SUCCESS"}
+{"timestamp":"2025-08-05T13:13:32.078Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"nope.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.078Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"nope.txt","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/dist/tests/unitTest/fixtures/nope.txt'"}
+{"timestamp":"2025-08-05T13:13:32.060Z","actor":"FileLoader","event":"FILE_LOADED","resource":"reload.txt","status":"SUCCESS","details":{"fingerprint":"ac1b5c0961a7269b6a053ee64276ed0e20a7f48aefb9f67519539d23aaf10149"}}
+{"timestamp":"2025-08-05T13:13:32.076Z","actor":"FileLoader","event":"FILE_LOADED","resource":"reload.txt","status":"SUCCESS","details":{"fingerprint":"b80012851cf027c6d8adda328907d400c95773958fb4fec3e544a02cd5eeab0e"}}
+{"timestamp":"2025-08-05T13:13:32.093Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"foo.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.094Z","actor":"FileLoader","event":"FILE_LOADED","resource":"foo.txt","status":"SUCCESS","details":{"fingerprint":"ac1b5c0961a7269b6a053ee64276ed0e20a7f48aefb9f67519539d23aaf10149"}}
+{"timestamp":"2025-08-05T13:13:32.099Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"foo.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.100Z","actor":"FileLoader","event":"FILE_LOADED","resource":"foo.txt","status":"SUCCESS","details":{"fingerprint":"d67e2e944994496c8d8ec76eed0cf9f09679448d584b532bebf941852a37f5ed"}}
+{"timestamp":"2025-08-05T13:13:32.103Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"foo.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.103Z","actor":"FileLoader","event":"FILE_LOADED","resource":"foo.txt","status":"SUCCESS","details":{"fingerprint":"d67e2e944994496c8d8ec76eed0cf9f09679448d584b532bebf941852a37f5ed"}}
+{"timestamp":"2025-08-05T13:13:32.103Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"foo.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.103Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"audit_valid.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.104Z","actor":"FileLoader","event":"FILE_LOADED","resource":"audit_valid.json","status":"SUCCESS","details":{"fingerprint":"93a23971a914e5eacbf0a8d25154cda309c3c1c72fbb9914d47c60f3cb681588"}}
+{"timestamp":"2025-08-05T13:13:32.105Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"audit_invalid.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.105Z","actor":"FileLoader","event":"FILE_LOAD_ERROR","resource":"audit_invalid.json","status":"FAILURE","details":"ENOENT: no such file or directory, stat '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/dist/tests/unitTest/fixtures/audit_invalid.json'"}
+{"timestamp":"2025-08-05T13:13:32.107Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.108Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T13:13:32.109Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.txt","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.109Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.txt","status":"SUCCESS","details":{"fingerprint":"b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9"}}
+{"timestamp":"2025-08-05T13:13:32.110Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"nonexistent.ext","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.110Z","actor":"FileLoader","event":"FILE_LOAD_ERROR","resource":"nonexistent.ext","status":"FAILURE","details":"ENOENT: no such file or directory, stat '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/dist/tests/unitTest/fixtures/nonexistent.ext'"}
+{"timestamp":"2025-08-05T13:13:32.123Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.124Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T13:13:32.125Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"audit_valid.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.126Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.126Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"missing.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.127Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T13:13:32.127Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.128Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"bad.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.126Z","actor":"FileLoader","event":"FILE_LOAD_ERROR","resource":"missing.json","status":"FAILURE","details":"ENOENT: no such file or directory, stat '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/dist/tests/unitTest/fixtures/missing.json'"}
+{"timestamp":"2025-08-05T13:13:32.127Z","actor":"FileLoader","event":"FILE_LOADED","resource":"audit_valid.json","status":"SUCCESS","details":{"fingerprint":"93a23971a914e5eacbf0a8d25154cda309c3c1c72fbb9914d47c60f3cb681588"}}
+{"timestamp":"2025-08-05T13:13:32.130Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"audit_invalid.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.130Z","actor":"FileLoader","event":"FILE_LOADED","resource":"bad.json","status":"SUCCESS","details":{"fingerprint":"b6cf81a8432c92a3b45bb02e07990055d764b9fc76991a5924a994ea66496a77"}}
+{"timestamp":"2025-08-05T13:13:32.130Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.131Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"bad.csv","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.131Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T13:13:32.132Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.132Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T13:13:32.132Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"other.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.132Z","actor":"FileLoader","event":"FILE_LOADED","resource":"other.json","status":"SUCCESS","details":{"fingerprint":"c450c726579d41e1daa46158c07c1ed4a81dddc5e8dcb96ad729bca95e0e6fac"}}
+{"timestamp":"2025-08-05T13:13:32.133Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"test.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.133Z","actor":"FileLoader","event":"FILE_LOADED","resource":"test.json","status":"SUCCESS","details":{"fingerprint":"7a38bf81f383f69433ad6e900d35b3e2385593f76a7b7ab5d4355b8ba41ee24b"}}
+{"timestamp":"2025-08-05T13:13:32.133Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"other.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.134Z","actor":"FileLoader","event":"FILE_LOADED","resource":"bad.csv","status":"SUCCESS","details":{"fingerprint":"08d13e84796370f80c6f3bd52710c8ac1e4ca194226ed70f422e22a3120f76e7"}}
+{"timestamp":"2025-08-05T13:13:32.135Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"bad.xml","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.130Z","actor":"FileLoader","event":"FILE_LOAD_ERROR","resource":"audit_invalid.json","status":"FAILURE","details":"ENOENT: no such file or directory, stat '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/src/tests/unitTest/fixtures/audit_invalid.json'"}
+{"timestamp":"2025-08-05T13:13:32.137Z","actor":"FileLoader","event":"FILE_LOADED","resource":"bad.xml","status":"SUCCESS","details":{"fingerprint":"2d6c4a09a5f59b76d95fddfbe63fd578624a8c9017adb7e62968fcd9ece43043"}}
+{"timestamp":"2025-08-05T13:13:32.164Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"bad.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.164Z","actor":"FileLoader","event":"FILE_LOADED","resource":"bad.json","status":"SUCCESS","details":{"fingerprint":"b6cf81a8432c92a3b45bb02e07990055d764b9fc76991a5924a994ea66496a77"}}
+{"timestamp":"2025-08-05T13:13:32.165Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"bad.csv","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.166Z","actor":"FileLoader","event":"FILE_LOADED","resource":"bad.csv","status":"SUCCESS","details":{"fingerprint":"08d13e84796370f80c6f3bd52710c8ac1e4ca194226ed70f422e22a3120f76e7"}}
+{"timestamp":"2025-08-05T13:13:32.166Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"bad.xml","status":"INIT"}
+{"timestamp":"2025-08-05T13:13:32.167Z","actor":"FileLoader","event":"FILE_LOADED","resource":"bad.xml","status":"SUCCESS","details":{"fingerprint":"2d6c4a09a5f59b76d95fddfbe63fd578624a8c9017adb7e62968fcd9ece43043"}}
+{"timestamp":"2025-08-05T13:15:07.389Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"src/config/api/ApiLib.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:15:07.391Z","actor":"FileLoader","event":"FILE_LOADED","resource":"src/config/api/ApiLib.json","status":"SUCCESS","details":{"fingerprint":"582e1ffe87130c9661998ecb73dda9a4057c37bf08bdec4a2afbb57933d046a9"}}
+{"timestamp":"2025-08-05T13:16:08.661Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"src/config/api/ApiLib.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:16:08.662Z","actor":"FileLoader","event":"FILE_LOADED","resource":"src/config/api/ApiLib.json","status":"SUCCESS","details":{"fingerprint":"582e1ffe87130c9661998ecb73dda9a4057c37bf08bdec4a2afbb57933d046a9"}}
+{"timestamp":"2025-08-05T13:17:55.380Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"src/config/api/ApiLib.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:17:55.381Z","actor":"FileLoader","event":"FILE_LOADED","resource":"src/config/api/ApiLib.json","status":"SUCCESS","details":{"fingerprint":"582e1ffe87130c9661998ecb73dda9a4057c37bf08bdec4a2afbb57933d046a9"}}
+{"timestamp":"2025-08-05T13:18:08.474Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"src/config/api/ApiLib.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:18:08.476Z","actor":"FileLoader","event":"FILE_LOADED","resource":"src/config/api/ApiLib.json","status":"SUCCESS","details":{"fingerprint":"582e1ffe87130c9661998ecb73dda9a4057c37bf08bdec4a2afbb57933d046a9"}}
+{"timestamp":"2025-08-05T13:18:12.255Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"src/config/api/ApiLib.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:18:12.259Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"src/config/api/ApiLib.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:18:12.261Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_END","resource":"src/config/api/ApiLib.json","status":"SUCCESS"}
+{"timestamp":"2025-08-05T13:18:12.261Z","actor":"FileLoader","event":"FILE_LOADED","resource":"src/config/api/ApiLib.json","status":"SUCCESS","details":{"fingerprint":"582e1ffe87130c9661998ecb73dda9a4057c37bf08bdec4a2afbb57933d046a9"}}
+{"timestamp":"2025-08-05T13:18:16.939Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"src/config/api/ApiLib.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:18:16.941Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_END","resource":"src/config/api/ApiLib.json","status":"SUCCESS"}
+{"timestamp":"2025-08-05T13:18:40.804Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"src/config/api/AtlassianApiLib.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:18:40.807Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_END","resource":"src/config/api/AtlassianApiLib.json","status":"SUCCESS"}
+{"timestamp":"2025-08-05T13:20:21.964Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"src/config/api/AtlassianApiLib.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:20:21.966Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_END","resource":"src/config/api/AtlassianApiLib.json","status":"SUCCESS"}
+{"timestamp":"2025-08-05T13:20:25.172Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"http://speedtest.tele2.net/100MB.zip","status":"INIT"}
+{"timestamp":"2025-08-05T13:20:25.175Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"http://speedtest.tele2.net/100MB.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/http:/speedtest.tele2.net/100MB.zip'"}
+{"timestamp":"2025-08-05T13:26:11.329Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"http://speedtest.tele2.net/100MB.zip","status":"INIT"}
+{"timestamp":"2025-08-05T13:26:11.332Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"http://speedtest.tele2.net/100MB.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/http:/speedtest.tele2.net/100MB.zip'"}
+{"timestamp":"2025-08-05T13:27:34.429Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":" http://speedtest.tele2.net/10MB.zip","status":"INIT"}
+{"timestamp":"2025-08-05T13:27:34.431Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":" http://speedtest.tele2.net/10MB.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/ http:/speedtest.tele2.net/10MB.zip'"}
+{"timestamp":"2025-08-05T13:27:34.728Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":" http://speedtest.tele2.net/10MB.zip","status":"INIT"}
+{"timestamp":"2025-08-05T13:27:34.730Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":" http://speedtest.tele2.net/10MB.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/ http:/speedtest.tele2.net/10MB.zip'"}
+{"timestamp":"2025-08-05T13:29:14.841Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4","status":"INIT"}
+{"timestamp":"2025-08-05T13:29:14.843Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/https:/sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4'"}
+{"timestamp":"2025-08-05T13:30:01.100Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"http://ipv4.download.thinkbroadband.com/200MB.zip","status":"INIT"}
+{"timestamp":"2025-08-05T13:30:01.102Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"http://ipv4.download.thinkbroadband.com/200MB.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/http:/ipv4.download.thinkbroadband.com/200MB.zip'"}
+{"timestamp":"2025-08-05T13:30:04.641Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"http://ipv4.download.thinkbroadband.com/200MB.zip","status":"INIT"}
+{"timestamp":"2025-08-05T13:30:04.643Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"http://ipv4.download.thinkbroadband.com/200MB.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/http:/ipv4.download.thinkbroadband.com/200MB.zip'"}
+{"timestamp":"2025-08-05T13:30:07.246Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"http://ipv4.download.thinkbroadband.com/200MB.zip","status":"INIT"}
+{"timestamp":"2025-08-05T13:30:07.248Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"http://ipv4.download.thinkbroadband.com/200MB.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/http:/ipv4.download.thinkbroadband.com/200MB.zip'"}
+{"timestamp":"2025-08-05T13:30:07.507Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"http://ipv4.download.thinkbroadband.com/200MB.zip","status":"INIT"}
+{"timestamp":"2025-08-05T13:30:07.509Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"http://ipv4.download.thinkbroadband.com/200MB.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/http:/ipv4.download.thinkbroadband.com/200MB.zip'"}
+{"timestamp":"2025-08-05T13:30:07.721Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"http://ipv4.download.thinkbroadband.com/200MB.zip","status":"INIT"}
+{"timestamp":"2025-08-05T13:30:07.723Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"http://ipv4.download.thinkbroadband.com/200MB.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/http:/ipv4.download.thinkbroadband.com/200MB.zip'"}
+{"timestamp":"2025-08-05T13:30:08.054Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"http://ipv4.download.thinkbroadband.com/200MB.zip","status":"INIT"}
+{"timestamp":"2025-08-05T13:30:08.056Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"http://ipv4.download.thinkbroadband.com/200MB.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/http:/ipv4.download.thinkbroadband.com/200MB.zip'"}
+{"timestamp":"2025-08-05T13:30:08.257Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"http://ipv4.download.thinkbroadband.com/200MB.zip","status":"INIT"}
+{"timestamp":"2025-08-05T13:30:08.259Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"http://ipv4.download.thinkbroadband.com/200MB.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/http:/ipv4.download.thinkbroadband.com/200MB.zip'"}
+{"timestamp":"2025-08-05T13:30:08.469Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"http://ipv4.download.thinkbroadband.com/200MB.zip","status":"INIT"}
+{"timestamp":"2025-08-05T13:30:08.472Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"http://ipv4.download.thinkbroadband.com/200MB.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/http:/ipv4.download.thinkbroadband.com/200MB.zip'"}
+{"timestamp":"2025-08-05T13:31:31.496Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"INIT"}
+{"timestamp":"2025-08-05T13:31:31.498Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/https:/github.com/eGuesdon/PMO/archive/refs/heads/main.zip'"}
+{"timestamp":"2025-08-05T13:31:32.356Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"INIT"}
+{"timestamp":"2025-08-05T13:31:32.358Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/https:/github.com/eGuesdon/PMO/archive/refs/heads/main.zip'"}
+{"timestamp":"2025-08-05T13:31:37.812Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"INIT"}
+{"timestamp":"2025-08-05T13:31:37.814Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/https:/github.com/eGuesdon/PMO/archive/refs/heads/main.zip'"}
+{"timestamp":"2025-08-05T13:31:40.047Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"INIT"}
+{"timestamp":"2025-08-05T13:31:40.049Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/https:/github.com/eGuesdon/PMO/archive/refs/heads/main.zip'"}
+{"timestamp":"2025-08-05T13:32:31.161Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"INIT"}
+{"timestamp":"2025-08-05T13:32:31.163Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/https:/github.com/eGuesdon/PMO/archive/refs/heads/main.zip'"}
+{"timestamp":"2025-08-05T13:32:37.890Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"INIT"}
+{"timestamp":"2025-08-05T13:32:37.892Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/https:/github.com/eGuesdon/PMO/archive/refs/heads/main.zip'"}
+{"timestamp":"2025-08-05T13:41:42.480Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"INIT"}
+{"timestamp":"2025-08-05T13:41:42.481Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"FAILURE","details":"stream.on is not a function"}
+{"timestamp":"2025-08-05T13:43:36.654Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"INIT"}
+{"timestamp":"2025-08-05T13:43:36.658Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/https:/github.com/eGuesdon/PMO/archive/refs/heads/main.zip'"}
+{"timestamp":"2025-08-05T13:54:23.534Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"INIT"}
+{"timestamp":"2025-08-05T13:54:23.536Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/https:/github.com/eGuesdon/PMO/archive/refs/heads/main.zip'"}
+{"timestamp":"2025-08-05T13:55:53.325Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"INIT"}
+{"timestamp":"2025-08-05T13:55:53.327Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/https:/github.com/eGuesdon/PMO/archive/refs/heads/main.zip'"}
+{"timestamp":"2025-08-05T13:55:53.417Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"INIT"}
+{"timestamp":"2025-08-05T13:55:53.419Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/https:/github.com/eGuesdon/PMO/archive/refs/heads/main.zip'"}
+{"timestamp":"2025-08-05T13:55:53.935Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"INIT"}
+{"timestamp":"2025-08-05T13:55:53.937Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/https:/github.com/eGuesdon/PMO/archive/refs/heads/main.zip'"}
+{"timestamp":"2025-08-05T13:55:58.526Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"INIT"}
+{"timestamp":"2025-08-05T13:55:58.528Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/https:/github.com/eGuesdon/PMO/archive/refs/heads/main.zip'"}
+{"timestamp":"2025-08-05T13:56:07.110Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"src/config/api/AtlassianApiLib.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:56:07.112Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_END","resource":"src/config/api/AtlassianApiLib.json","status":"SUCCESS"}
+{"timestamp":"2025-08-05T13:56:16.569Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"src/config/api/AtlassianApiLib.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:56:16.572Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_END","resource":"src/config/api/AtlassianApiLib.json","status":"SUCCESS"}
+{"timestamp":"2025-08-05T13:56:26.724Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"src/config/api/ApiLib.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:56:26.726Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"src/config/api/AtlassianApiLib.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:56:26.727Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_END","resource":"src/config/api/AtlassianApiLib.json","status":"SUCCESS"}
+{"timestamp":"2025-08-05T13:56:26.728Z","actor":"FileLoader","event":"FILE_LOADED","resource":"src/config/api/ApiLib.json","status":"SUCCESS","details":{"fingerprint":"582e1ffe87130c9661998ecb73dda9a4057c37bf08bdec4a2afbb57933d046a9"}}
+{"timestamp":"2025-08-05T13:56:34.816Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"src/config/api/AtlassianApiLib.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:56:34.819Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_END","resource":"src/config/api/AtlassianApiLib.json","status":"SUCCESS"}
+{"timestamp":"2025-08-05T13:56:38.747Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"src/config/api/AtlassianApiLib.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:56:38.749Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_END","resource":"src/config/api/AtlassianApiLib.json","status":"SUCCESS"}
+{"timestamp":"2025-08-05T13:59:41.221Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"src/config/api/AtlassianApiLib.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:59:41.223Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_END","resource":"src/config/api/AtlassianApiLib.json","status":"SUCCESS"}
+{"timestamp":"2025-08-05T13:59:57.846Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"src/config/api/ApiLib.json","status":"INIT"}
+{"timestamp":"2025-08-05T13:59:57.848Z","actor":"FileLoader","event":"FILE_LOADED","resource":"src/config/api/ApiLib.json","status":"SUCCESS","details":{"fingerprint":"582e1ffe87130c9661998ecb73dda9a4057c37bf08bdec4a2afbb57933d046a9"}}
+{"timestamp":"2025-08-05T14:00:13.217Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"src/config/api/Atlassian ApiLib.json","status":"INIT"}
+{"timestamp":"2025-08-05T14:00:13.218Z","actor":"FileLoader","event":"FILE_LOAD_ERROR","resource":"src/config/api/Atlassian ApiLib.json","status":"FAILURE","details":"ENOENT: no such file or directory, stat '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/src/config/api/Atlassian ApiLib.json'"}
+{"timestamp":"2025-08-05T14:00:14.617Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"src/config/api/AtlassianApiLib.json","status":"INIT"}
+{"timestamp":"2025-08-05T14:00:14.618Z","actor":"FileLoader","event":"FILE_LOADED","resource":"src/config/api/AtlassianApiLib.json","status":"SUCCESS","details":{"fingerprint":"79549d084fafee17abe2ff51737351a14e37f550d38edea99fe17f24d2cd9d50"}}
+{"timestamp":"2025-08-05T14:00:30.818Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"src/config/api/AtlassianApiLib.json","status":"INIT"}
+{"timestamp":"2025-08-05T14:00:30.819Z","actor":"FileLoader","event":"FILE_LOADED","resource":"src/config/api/AtlassianApiLib.json","status":"SUCCESS","details":{"fingerprint":"79549d084fafee17abe2ff51737351a14e37f550d38edea99fe17f24d2cd9d50"}}
+{"timestamp":"2025-08-05T14:00:36.050Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"src/config/api/AtlassianApiLib.json","status":"INIT"}
+{"timestamp":"2025-08-05T14:00:36.051Z","actor":"FileLoader","event":"FILE_LOADED","resource":"src/config/api/AtlassianApiLib.json","status":"SUCCESS","details":{"fingerprint":"79549d084fafee17abe2ff51737351a14e37f550d38edea99fe17f24d2cd9d50"}}
+{"timestamp":"2025-08-05T14:00:40.899Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"src/config/api/AtlassianApiLib.json","status":"INIT"}
+{"timestamp":"2025-08-05T14:00:40.901Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"INIT"}
+{"timestamp":"2025-08-05T14:00:40.903Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/https:/github.com/eGuesdon/PMO/archive/refs/heads/main.zip'"}
+{"timestamp":"2025-08-05T14:00:40.903Z","actor":"FileLoader","event":"FILE_LOADED","resource":"src/config/api/AtlassianApiLib.json","status":"SUCCESS","details":{"fingerprint":"79549d084fafee17abe2ff51737351a14e37f550d38edea99fe17f24d2cd9d50"}}
+{"timestamp":"2025-08-05T14:00:45.830Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"INIT"}
+{"timestamp":"2025-08-05T14:00:45.833Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/https:/github.com/eGuesdon/PMO/archive/refs/heads/main.zip'"}
+{"timestamp":"2025-08-05T14:01:04.033Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"INIT"}
+{"timestamp":"2025-08-05T14:01:04.035Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/https:/github.com/eGuesdon/PMO/archive/refs/heads/main.zip'"}
+{"timestamp":"2025-08-05T14:01:07.213Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"INIT"}
+{"timestamp":"2025-08-05T14:01:07.215Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/https:/github.com/eGuesdon/PMO/archive/refs/heads/main.zip'"}
+{"timestamp":"2025-08-05T14:01:10.125Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"INIT"}
+{"timestamp":"2025-08-05T14:01:10.128Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/https:/github.com/eGuesdon/PMO/archive/refs/heads/main.zip'"}
+{"timestamp":"2025-08-05T14:01:50.677Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"INIT"}
+{"timestamp":"2025-08-05T14:01:50.680Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/https:/github.com/eGuesdon/PMO/archive/refs/heads/main.zip'"}
+{"timestamp":"2025-08-05T14:03:48.980Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"INIT"}
+{"timestamp":"2025-08-05T14:03:48.983Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/https:/github.com/eGuesdon/PMO/archive/refs/heads/main.zip'"}
+{"timestamp":"2025-08-05T14:04:19.378Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"INIT"}
+{"timestamp":"2025-08-05T14:04:19.380Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/https:/github.com/eGuesdon/PMO/archive/refs/heads/main.zip'"}
+{"timestamp":"2025-08-05T14:04:28.962Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"src/config/api/AtlassianApiLib.json","status":"INIT"}
+{"timestamp":"2025-08-05T14:04:28.964Z","actor":"FileLoader","event":"FILE_LOADED","resource":"src/config/api/AtlassianApiLib.json","status":"SUCCESS","details":{"fingerprint":"79549d084fafee17abe2ff51737351a14e37f550d38edea99fe17f24d2cd9d50"}}
+{"timestamp":"2025-08-05T14:04:28.965Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"INIT"}
+{"timestamp":"2025-08-05T14:04:28.966Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/https:/github.com/eGuesdon/PMO/archive/refs/heads/main.zip'"}
+{"timestamp":"2025-08-05T14:05:54.446Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"src/config/api/AtlassianApiLib.json","status":"INIT"}
+{"timestamp":"2025-08-05T14:05:54.448Z","actor":"FileLoader","event":"FILE_LOADED","resource":"src/config/api/AtlassianApiLib.json","status":"SUCCESS","details":{"fingerprint":"79549d084fafee17abe2ff51737351a14e37f550d38edea99fe17f24d2cd9d50"}}
+{"timestamp":"2025-08-05T14:05:54.450Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"INIT"}
+{"timestamp":"2025-08-05T14:05:54.451Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/https:/github.com/eGuesdon/PMO/archive/refs/heads/main.zip'"}
+{"timestamp":"2025-08-05T14:06:05.459Z","actor":"FileLoader","event":"FILE_LOAD_START","resource":"src/config/api/AtlassianApiLib.json","status":"INIT"}
+{"timestamp":"2025-08-05T14:06:05.460Z","actor":"FileLoader","event":"FILE_LOADED","resource":"src/config/api/AtlassianApiLib.json","status":"SUCCESS","details":{"fingerprint":"79549d084fafee17abe2ff51737351a14e37f550d38edea99fe17f24d2cd9d50"}}
+{"timestamp":"2025-08-05T14:06:05.462Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_START","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"INIT"}
+{"timestamp":"2025-08-05T14:06:05.463Z","actor":"FileLoader","event":"FILE_LOAD_STREAM_ERROR","resource":"https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip","status":"FAILURE","details":"ENOENT: no such file or directory, open '/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/https:/github.com/eGuesdon/PMO/archive/refs/heads/main.zip'"}

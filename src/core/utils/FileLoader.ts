@@ -4,6 +4,10 @@ import { createHash } from 'crypto';
 import { parseContent } from './parsers';
 import { AuditService, FileAuditTransport } from './AuditService';
 import { SimpleLRUCache } from './SimpleLRUCache';
+import { createReadStream, Stats } from 'fs';
+import { Readable } from 'stream';
+import type { FileTransport } from './transports/FileTransport';
+import { LocalTransport } from './transports/LocalTransport';
 
 /**
  * Métadonnées retournées par FileLoader.
@@ -34,6 +38,8 @@ interface CacheEntry {
  */
 export class FileLoader {
   private static instance: FileLoader;
+  /** Liste des transports pour lecture locale ou distante. */
+  private transports: FileTransport[];
   /**
    * Cache LRU des entrées avec TTL et fingerprint.
    * LRU cache of entries with TTL and fingerprint.
@@ -41,20 +47,24 @@ export class FileLoader {
   private cache: SimpleLRUCache<string, CacheEntry>;
   private readonly ttlMs = 5 * 60 * 1000; // 5 min
 
-  private constructor(private baseDir: string = process.cwd()) {
+  private constructor(
+    transports: FileTransport[],
+    private baseDir: string = process.cwd(),
+  ) {
     // Initialise un cache LRU à 100 entrées, sans hook d'éviction
     this.cache = new SimpleLRUCache<string, CacheEntry>(100);
-
-    // Première instanciation : config audit
-    const auditLogPath = path.resolve(process.cwd(), 'logs/audit.log');
-    const transport = new FileAuditTransport(auditLogPath);
-    AuditService.getInstance([transport]);
+    this.transports = transports;
   }
 
   /** Récupère l’instance unique (et configure audit une seule fois). */
-  public static getInstance(baseDir?: string): FileLoader {
+  public static getInstance(baseDir?: string, transports?: FileTransport[]): FileLoader {
     if (!FileLoader.instance) {
-      FileLoader.instance = new FileLoader(baseDir ?? process.cwd());
+      const tx = transports ?? [new LocalTransport(baseDir ?? process.cwd())];
+      FileLoader.instance = new FileLoader(tx, baseDir ?? process.cwd());
+      // Première instanciation : config audit
+      const auditLogPath = path.resolve(process.cwd(), 'logs/audit.log');
+      const transportAudit = new FileAuditTransport(auditLogPath);
+      AuditService.getInstance([transportAudit]);
     }
     return FileLoader.instance;
   }
@@ -87,7 +97,8 @@ export class FileLoader {
       status: 'INIT',
     });
 
-    const abs = path.isAbsolute(filePath) ? filePath : path.resolve(this.baseDir, filePath);
+    const abs = filePath;
+    const isRemote = /^https?:\/\//.test(filePath) || /^s3:\/\//.test(filePath);
 
     // 1) Vérification cache avant I/O (TTL uniquement)
     const now = Date.now();
@@ -103,11 +114,17 @@ export class FileLoader {
       // sinon, on poursuit pour mettre à jour cache et lecture complète
     }
 
-    // 3) Stat + lecture
+    // 3) Lecture via transport
     let stats, raw: string;
     try {
-      stats = await fsp.stat(abs);
-      raw = await fsp.readFile(abs, 'utf-8');
+      if (isRemote) {
+        const result = await this.transports[0].readAll(filePath);
+        raw = result.data;
+        stats = { birthtime: result.metadata.createdAt, mtime: result.metadata.updatedAt } as Stats;
+      } else {
+        stats = await fsp.stat(path.resolve(this.baseDir, filePath));
+        raw = await fsp.readFile(path.resolve(this.baseDir, filePath), 'utf-8');
+      }
     } catch (err: any) {
       // Audit : erreur de lecture
       AuditService.getInstance().log({
@@ -161,5 +178,59 @@ export class FileLoader {
     });
 
     return metadata;
+  }
+
+  /**
+   * Retourne un Readable Node.js pour lire le fichier
+   * en flux, chunk par chunk (UTF-8).
+   *
+   * @param filePath Chemin relatif ou absolu du fichier.
+   * @returns Readable, à utiliser avec `for await (const chunk of …)`.
+   */
+  public async loadAsStream(filePath: string): Promise<Readable> {
+    const isRemote = /^https?:\/\//.test(filePath) || /^s3:\/\//.test(filePath);
+    const source = filePath;
+
+    // Audit start
+    AuditService.getInstance().log({
+      actor: 'FileLoader',
+      event: 'FILE_LOAD_STREAM_START',
+      resource: filePath,
+      status: 'INIT',
+    });
+
+    let stream: Readable;
+    try {
+      stream = isRemote ? await this.transports[0].readStream(source) : createReadStream(path.resolve(this.baseDir, filePath), { encoding: 'utf-8' });
+      stream.on('end', () => {
+        AuditService.getInstance().log({
+          actor: 'FileLoader',
+          event: 'FILE_LOAD_STREAM_END',
+          resource: filePath,
+          status: 'SUCCESS',
+        });
+      });
+      stream.on('error', (err) => {
+        AuditService.getInstance().log({
+          actor: 'FileLoader',
+          event: 'FILE_LOAD_STREAM_ERROR',
+          resource: filePath,
+          status: 'FAILURE',
+          details: err.message,
+        });
+      });
+    } catch (err: any) {
+      // en cas d’erreur synchrone (chemin invalide, permissions…)
+      AuditService.getInstance().log({
+        actor: 'FileLoader',
+        event: 'FILE_LOAD_STREAM_ERROR',
+        resource: filePath,
+        status: 'FAILURE',
+        details: err.message,
+      });
+      throw err;
+    }
+
+    return stream;
   }
 }
