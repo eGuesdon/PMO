@@ -2,7 +2,7 @@
   "vendors": [
     {
       "vendorName": "Atlassian",
-      "configFilePath": "src/config/ref/api/AtlassianApiLib.json"
+      "configFilePath": "src/config/api/AtlassianApiLib.json"
     }
   ]
 }

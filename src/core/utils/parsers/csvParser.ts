@@ -7,7 +7,7 @@ export function parseCSV(raw: string): any {
       skip_empty_lines: true,
     });
   } catch (error) {
-    console.error('❌ Erreur de parsing CSV', error);
+    //console.error('❌ Erreur de parsing CSV', error);
     return raw;
   }
 }

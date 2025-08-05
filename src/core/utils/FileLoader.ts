@@ -3,6 +3,7 @@ import * as path from 'path';
 import { createHash } from 'crypto';
 import { parseContent } from './parsers';
 import { AuditService, FileAuditTransport } from './AuditService';
+import { SimpleLRUCache } from './SimpleLRUCache';
 
 /**
  * Métadonnées retournées par FileLoader.
@@ -33,10 +34,17 @@ interface CacheEntry {
  */
 export class FileLoader {
   private static instance: FileLoader;
-  private cache = new Map<string, CacheEntry>();
+  /**
+   * Cache LRU des entrées avec TTL et fingerprint.
+   * LRU cache of entries with TTL and fingerprint.
+   */
+  private cache: SimpleLRUCache<string, CacheEntry>;
   private readonly ttlMs = 5 * 60 * 1000; // 5 min
 
   private constructor(private baseDir: string = process.cwd()) {
+    // Initialise un cache LRU à 100 entrées, sans hook d'éviction
+    this.cache = new SimpleLRUCache<string, CacheEntry>(100);
+
     // Première instanciation : config audit
     const auditLogPath = path.resolve(process.cwd(), 'logs/audit.log');
     const transport = new FileAuditTransport(auditLogPath);
