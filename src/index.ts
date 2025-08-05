@@ -1,4 +1,5 @@
 // src/index.ts
+import { Readable } from 'stream';
 import { FileLoader } from './core/utils/FileLoader';
 import { parseZIPStream } from './core/utils/parsers/zipParser';
 
@@ -20,7 +21,7 @@ async function main() {
   } catch (err: any) {
     console.error('⚠️  Impossible de charger le fichier :', err.message);
   }
-
+  //streamDemo();
   await zipDemo();
 }
 
@@ -34,7 +35,7 @@ async function streamDemo() {
     let aggregated = '';
     for await (const chunk of stream) {
       aggregated += chunk;
-      // Ici, on affiche un indicateur simple
+      // Ici, on affiche un indicateur simplestreamDemo();
       process.stdout.write('.');
     }
     console.log('\n✅ Streaming terminé, taille totale :', aggregated.length, 'octets');
@@ -51,6 +52,17 @@ async function zipDemo() {
 
   console.log(`🚀 Streaming et décompression de ${zipUrl}`);
   const zipStream = await loader.loadAsStream(zipUrl);
+
+  // 🔍 Debug: vérifier arrivée des données brutes
+  zipStream.once('data', (chunk) => {
+    console.log('▶️ Premier chunk reçu, taille en octets :', Buffer.byteLength(typeof chunk === 'string' ? chunk : chunk.toString('utf-8')));
+  });
+  zipStream.once('end', () => {
+    console.log('🚩 Fin du flux ZIP (événement end)');
+  });
+
+  // 🔍 Vérification
+  console.log('→ zipStream est Readable Node.js ?', zipStream instanceof Readable);
 
   for await (const entry of parseZIPStream(zipStream)) {
     console.log(`📄 Entrée: ${entry.path} (${entry.type}), taille: ${entry.size} octets`);

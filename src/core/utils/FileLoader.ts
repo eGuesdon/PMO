@@ -1,14 +1,15 @@
 import * as fsp from 'fs/promises';
+import { createReadStream, Stats } from 'fs';
 import * as path from 'path';
 import { createHash } from 'crypto';
+import { Readable } from 'stream';
+
 import { parseContent } from './parsers';
 import { AuditService, FileAuditTransport } from './AuditService';
 import { SimpleLRUCache } from './SimpleLRUCache';
-import { createReadStream, Stats } from 'fs';
-import { Readable } from 'stream';
 import type { FileTransport } from './transports/FileTransport';
 import { LocalTransport } from './transports/LocalTransport';
-
+import { HttpTransport } from './transports/HttpTransport';
 /**
  * Métadonnées retournées par FileLoader.
  */
@@ -188,39 +189,35 @@ export class FileLoader {
    * @returns Readable, à utiliser avec `for await (const chunk of …)`.
    */
   public async loadAsStream(filePath: string): Promise<Readable> {
-    const isRemote = /^https?:\/\//.test(filePath) || /^s3:\/\//.test(filePath);
-    const source = filePath;
+    const isRemote = filePath.startsWith('http://') || filePath.startsWith('https://');
 
-    // Audit start
-    AuditService.getInstance().log({
-      actor: 'FileLoader',
-      event: 'FILE_LOAD_STREAM_START',
-      resource: filePath,
-      status: 'INIT',
-    });
-
-    let stream: Readable;
     try {
-      stream = isRemote ? await this.transports[0].readStream(source) : createReadStream(path.resolve(this.baseDir, filePath), { encoding: 'utf-8' });
-      stream.on('end', () => {
-        AuditService.getInstance().log({
-          actor: 'FileLoader',
-          event: 'FILE_LOAD_STREAM_END',
-          resource: filePath,
-          status: 'SUCCESS',
-        });
+      AuditService.getInstance().log({
+        actor: 'FileLoader',
+        event: 'FILE_LOAD_STREAM_START',
+        resource: filePath,
+        status: 'INIT',
       });
-      stream.on('error', (err) => {
-        AuditService.getInstance().log({
-          actor: 'FileLoader',
-          event: 'FILE_LOAD_STREAM_ERROR',
-          resource: filePath,
-          status: 'FAILURE',
-          details: err.message,
-        });
+
+      let stream: Readable;
+      if (isRemote) {
+        // pour les URLs, on délègue au transport HTTP
+        const transport = new HttpTransport();
+        stream = await transport.readStream(filePath);
+      } else {
+        // pour les fichiers locaux, on lit en stream
+        const absolute = path.isAbsolute(filePath) ? filePath : path.resolve(this.baseDir, filePath);
+        stream = createReadStream(absolute);
+      }
+
+      AuditService.getInstance().log({
+        actor: 'FileLoader',
+        event: 'FILE_LOAD_STREAM_END',
+        resource: filePath,
+        status: 'SUCCESS',
       });
+      return stream;
     } catch (err: any) {
-      // en cas d’erreur synchrone (chemin invalide, permissions…)
       AuditService.getInstance().log({
         actor: 'FileLoader',
         event: 'FILE_LOAD_STREAM_ERROR',
@@ -230,7 +227,5 @@ export class FileLoader {
       });
       throw err;
     }
-
-    return stream;
   }
 }

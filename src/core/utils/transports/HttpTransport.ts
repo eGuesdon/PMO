@@ -38,10 +38,18 @@ export class HttpTransport implements FileTransport {
    * @throws Error if the HTTP response is not ok or body is empty.
    */
   public async readStream(url: string): Promise<Readable> {
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      headers: { 'User-Agent': 'Node.js FileLoader' },
+    });
     if (!response.ok) {
       throw new Error(`HTTP error ${response.status} for URL ${url}`);
     }
+
+    const contentType = response.headers.get('content-type') || '';
+    if (!/application\/zip/.test(contentType)) {
+      console.warn(`Warning: content-type "${contentType}" for URL ${url}, expected application/zip`);
+    }
+
     const body = response.body;
     if (!body) {
       throw new Error(`Empty response body for URL ${url}`);
