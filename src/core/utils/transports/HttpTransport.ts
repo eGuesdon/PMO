@@ -13,7 +13,10 @@ export class HttpTransport implements FileTransport {
    * @param url L'URL du fichier à lire.
    */
   public async readAll(url: string): Promise<FileReadResult> {
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      headers: { 'User-Agent': 'Node.js FileLoader' },
+      redirect: 'follow',
+    });
     if (!response.ok) {
       throw new Error(`HTTP error ${response.status} for URL ${url}`);
     }
@@ -40,6 +43,7 @@ export class HttpTransport implements FileTransport {
   public async readStream(url: string): Promise<Readable> {
     const response = await fetch(url, {
       headers: { 'User-Agent': 'Node.js FileLoader' },
+      redirect: 'follow',
     });
     if (!response.ok) {
       throw new Error(`HTTP error ${response.status} for URL ${url}`);

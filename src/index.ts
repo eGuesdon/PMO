@@ -48,7 +48,7 @@ async function streamDemo() {
 async function zipDemo() {
   const loader = FileLoader.getInstance();
   // ZIP standard GitHub d’un repo public
-  const zipUrl = 'https://github.com/eGuesdon/PMO/archive/refs/heads/main.zip';
+  const zipUrl = 'https://codeload.github.com/eGuesdon/PMO/zip/main';
 
   console.log(`🚀 Streaming et décompression de ${zipUrl}`);
   const zipStream = await loader.loadAsStream(zipUrl);
