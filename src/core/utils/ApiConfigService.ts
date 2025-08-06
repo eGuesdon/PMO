@@ -1,32 +1,19 @@
+// src/core/utils/ApiConfigService.ts
 import { FileLoader, FileMetadata } from './FileLoader';
+import { ServiceRegistry } from './ServiceRegistry';
+import { EndpointConfig } from './VendorConfigService';
 
-/**
- * Représente une entrée de configuration pour un vendor.
- */
-export interface VendorConfigEntry {
+interface VendorEntry {
   vendorName: string;
   configFilePath: string;
 }
 
-/**
- * Service singleton pour gérer les configurations API par vendor.
- * Charge le fichier de configuration principal (API_LIB) et
- * permet d'interroger les vendorNames et leurs chemins.
- */
 export class ApiConfigService {
   private static instance: ApiConfigService;
-  private entries: VendorConfigEntry[] = [];
+  private entries: VendorEntry[] = [];
 
-  /**
-   * Constructeur privé, use getInstance() pour obtenir l'instance.
-   * @param configFilePath Chemin vers le fichier de configuration (apiLib.json)
-   */
   private constructor(private configFilePath: string) {}
 
-  /**
-   * Retourne l'instance unique, en initialisant les entrées si nécessaire.
-   * @param configFilePath Chemin vers apiLib.json
-   */
   public static async getInstance(configFilePath: string): Promise<ApiConfigService> {
     if (!ApiConfigService.instance) {
       const svc = new ApiConfigService(configFilePath);
@@ -36,41 +23,59 @@ export class ApiConfigService {
     return ApiConfigService.instance;
   }
 
-  /**
-   * Charge et parse le fichier JSON de configuration pour peupler les entries.
-   * @throws {Error} si le format JSON est invalide ou l'accès au fichier échoue.
-   */
   private async load(): Promise<void> {
-    const loader = FileLoader.getInstance();
-    const metadata: FileMetadata = await loader.load(this.configFilePath);
-    const data = metadata.content;
-    if (!data || !Array.isArray((data as any).vendors)) {
-      throw new Error(`Format invalide dans ${this.configFilePath}: la propriété 'vendors' est manquante ou mal formée.`);
+    const meta: FileMetadata = await FileLoader.getInstance().load(this.configFilePath);
+    const data = meta.content as any;
+    if (!Array.isArray(data.vendors)) {
+      throw new Error(`Le fichier ${this.configFilePath} ne contient pas de tableau "vendors".`);
     }
-    this.entries = (data as any).vendors.map((entry: any) => ({
-      vendorName: entry.vendorName,
-      configFilePath: entry.configFilePath,
+    this.entries = data.vendors.map((v: any) => ({
+      vendorName: v.vendorName,
+      configFilePath: v.configFilePath,
     }));
   }
 
-  /**
-   * Retourne le chemin de configuration associé à un vendorName.
-   * @param vendorName Nom du vendor
-   * @returns Le chemin de config, ou undefined si le vendorName n'existe pas.
-   */
-  public getConfigPath(vendorName: string): string | undefined {
-    const key = vendorName.toLowerCase();
-    const found = this.entries.find(e => e.vendorName.toLowerCase() === key);
-    return found?.configFilePath;
+  public getAllVendors(): string[] {
+    return this.entries.map((e) => e.vendorName);
+  }
+
+  // Exposé pour ServiceRegistry
+  public get entriesList(): VendorEntry[] {
+    return this.entries;
+  }
+
+  // Facade simple pour récupérer le service vendor
+  public async getVendorService(vendorName: string) {
+    return ServiceRegistry.getInstance().getVendorService(this.configFilePath, vendorName);
+  }
+
+  public async getEndpoints(vendorName: string): Promise<EndpointConfig[]> {
+    const svc = await this.getVendorService(vendorName);
+    return svc.getEndpoints();
+  }
+
+  public async getEndpoint(vendorName: string, endpointName: string): Promise<EndpointConfig | undefined> {
+    const eps = await this.getEndpoints(vendorName);
+    return eps.find((e) => e.name.toLowerCase() === endpointName.toLowerCase());
+  }
+
+  public async getEndpointsByFamily(vendorName: string, family: string): Promise<EndpointConfig[]> {
+    const svc = await this.getVendorService(vendorName);
+    return svc.getEndpointsByFamily(family);
+  }
+
+  public async getEndpointsNames(vendorName: string) {
+    const eps = await this.getEndpoints(vendorName);
+    return eps.map((e) => e.name);
   }
 
   /**
-   * Retourne la liste de tous les vendorName disponibles.
-   * @returns Tableau de chaînes de caractères
+   * Retourne la liste des noms des endpoints d'une famille donnée pour un vendor.
+   * @param vendorName Nom du vendor (case-insensitive)
+   * @param family Famille d'endpoints (case-insensitive)
    */
-  public getAllVendorNames(): string[] {
-    return this.entries
-      .map(e => e.vendorName)
-      .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+  public async getEndpointsNamesByFamily(vendorName: string, family: string): Promise<string[]> {
+    const eps = await this.getEndpointsByFamily(vendorName, family);
+    return eps.map((e) => e.name);
   }
 }

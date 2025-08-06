@@ -1,11 +1,12 @@
 {
-  "$schema": "../schemas/apiLib.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "../schemas/apiLib.schema.json",
   "entries": [
     {
       "vendor": "Atlassian",
       "product": "jira",
       "offer": "cloud",
-      "baseURL": "${JIRA_BASE_URL}",
+      "baseURL": "${JIRA_DOMAIN}",
       "apiAccess": {
         "userEnv": "JIRA_LOGIN",
         "tokenEnv": "JIRA_TOKEN"
@@ -29,6 +30,7 @@
           "name": "getIssues",
           "operationId": "search",
           "enabled": true,
+          "family": "search",
           "path": "/rest/api/3/search/jql",
           "method": "GET",
           "headers": {
@@ -40,6 +42,7 @@
           "name": "countIssues",
           "operationId": "count",
           "enabled": true,
+          "family": "search",
           "path": "/rest/api/3/search/count",
           "method": "POST",
           "headers": {
@@ -54,7 +57,7 @@
       "vendor": "Atlassian",
       "product": "confluence",
       "offer": "cloud",
-      "baseURL": "${CONFLUENCE_BASE_URL}",
+      "baseURL": "${CONFLUENCE_DOMAIN}",
       "apiAccess": {
         "userEnv": "CONFLUENCE_LOGIN",
         "tokenEnv": "CONFLUENCE_TOKEN"

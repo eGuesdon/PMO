@@ -24,7 +24,10 @@
           },
           "baseURL": {
             "type": "string",
-            "format": "uri-template"
+            "anyOf": [
+              { "format": "uri" },
+              { "pattern": "^\\$\\{[A-Z0-9_]+\\}$" }
+            ]
           },
           "apiAccess": {
             "type": "object",
@@ -93,7 +96,7 @@
             "type": "array",
             "items": {
               "type": "object",
-              "required": ["name", "operationId", "enabled", "path", "method", "headers"],
+              "required": ["name", "operationId", "enabled", "path", "method", "headers", "family"],
               "properties": {
                 "name": {
                   "type": "string"
@@ -119,6 +122,9 @@
                     }
                   },
                   "additionalProperties": false
+                },
+                "family": {
+                  "type": "string"
                 }
               },
               "additionalProperties": false
