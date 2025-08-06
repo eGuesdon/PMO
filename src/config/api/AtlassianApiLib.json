@@ -1,59 +1,79 @@
 {
-  "name": "Atlassian",
-  "product": [
+  "$schema": "../schemas/apiLib.schema.json",
+  "entries": [
     {
-      "name": "jira",
+      "vendor": "Atlassian",
+      "product": "jira",
       "offer": "cloud",
+      "baseURL": "${JIRA_BASE_URL}",
       "apiAccess": {
-        "domain": "JIRA_DOMAIN",
-        "user": "JIRA_LOGIN",
-        "secret": "JIRA_TOKEN"
+        "userEnv": "JIRA_LOGIN",
+        "tokenEnv": "JIRA_TOKEN"
       },
-      "paginationModel": {
-        "offset-based": {
-          "startAt": 0,
-          "maxResults": 50
-        },
-        "cursor-based": {
-          "isLast": 0,
-          "nextCursor": "nextPagetoken"
+      "pagination": {
+        "cursor": {
+          "initialToken": null,
+          "nextTokenField": "nextPageToken",
+          "pageSizeField": "maxResults",
+          "defaultPageSize": 50
         }
       },
-      "apiLib": [
+      "timeoutMs": 30000,
+      "retryPolicy": {
+        "retries": 3,
+        "factor": 2,
+        "minTimeoutMs": 1000
+      },
+      "endpoints": [
         {
-          "version": 3,
-          "timestamp": "ISO-8601",
-          "paginationModel": "cursor-based",
-          "endPoints": [
-            {
-              "name": "getIssues",
-              "callSign": "search",
-              "enabled": true,
-              "path": "/rest/api/3/search/jql",
-              "method": "GET",
-              "headers": {
-                "Authorization": "Basic",
-                "Accept": "application/json"
-              }
-            },
-            {
-              "name": "countIssues",
-              "callSign": "count",
-              "enabled": true,
-              "path": "",
-              "method": "POST",
-              "headers": {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-              }
-            }
-          ]
+          "name": "getIssues",
+          "operationId": "search",
+          "enabled": true,
+          "path": "/rest/api/3/search/jql",
+          "method": "GET",
+          "headers": {
+            "Accept": "application/json",
+            "Authorization": "Bearer ${JIRA_TOKEN}"
+          }
+        },
+        {
+          "name": "countIssues",
+          "operationId": "count",
+          "enabled": true,
+          "path": "/rest/api/3/search/count",
+          "method": "POST",
+          "headers": {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${JIRA_TOKEN}"
+          }
         }
       ]
     },
     {
-      "name": "Confluence",
-      "offer": "cloud"
+      "vendor": "Atlassian",
+      "product": "confluence",
+      "offer": "cloud",
+      "baseURL": "${CONFLUENCE_BASE_URL}",
+      "apiAccess": {
+        "userEnv": "CONFLUENCE_LOGIN",
+        "tokenEnv": "CONFLUENCE_TOKEN"
+      },
+      "pagination": {
+        "cursor": {
+          "initialToken": null,
+          "nextTokenField": "nextPageToken",
+          "pageSizeField": "maxResults",
+          "defaultPageSize": 50
+        }
+      },
+      "timeoutMs": 30000,
+      "retryPolicy": {
+        "retries": 3,
+        "factor": 2,
+        "minTimeoutMs": 1000
+      },
+      "endpoints": []
     }
   ]
 }

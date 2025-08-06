@@ -1,0 +1,134 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "API Library Configuration",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri"
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["vendor", "product", "offer", "baseURL", "apiAccess", "pagination", "timeoutMs", "retryPolicy", "endpoints"],
+        "properties": {
+          "vendor": {
+            "type": "string"
+          },
+          "product": {
+            "type": "string"
+          },
+          "offer": {
+            "type": "string"
+          },
+          "baseURL": {
+            "type": "string",
+            "format": "uri-template"
+          },
+          "apiAccess": {
+            "type": "object",
+            "required": ["userEnv", "tokenEnv"],
+            "properties": {
+              "userEnv": {
+                "type": "string"
+              },
+              "tokenEnv": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "pagination": {
+            "type": "object",
+            "required": ["cursor"],
+            "properties": {
+              "cursor": {
+                "type": "object",
+                "required": ["initialToken", "nextTokenField", "pageSizeField", "defaultPageSize"],
+                "properties": {
+                  "initialToken": {
+                    "type": ["string", "null"]
+                  },
+                  "nextTokenField": {
+                    "type": "string"
+                  },
+                  "pageSizeField": {
+                    "type": "string"
+                  },
+                  "defaultPageSize": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          },
+          "timeoutMs": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "retryPolicy": {
+            "type": "object",
+            "required": ["retries", "factor", "minTimeoutMs"],
+            "properties": {
+              "retries": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "factor": {
+                "type": "number",
+                "minimum": 1
+              },
+              "minTimeoutMs": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "additionalProperties": false
+          },
+          "endpoints": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "operationId", "enabled", "path", "method", "headers"],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "operationId": {
+                  "type": "string"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "path": {
+                  "type": "string"
+                },
+                "method": {
+                  "type": "string",
+                  "enum": ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"]
+                },
+                "headers": {
+                  "type": "object",
+                  "patternProperties": {
+                    "^[A-Za-z0-9-]+$": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["entries"],
+  "additionalProperties": false
+}
