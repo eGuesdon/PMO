@@ -43,8 +43,9 @@
           "operationId": "count",
           "enabled": true,
           "family": "search",
-          "path": "/rest/api/3/search/count",
+          "path": "/rest/api/3/search/approximate-count",
           "method": "POST",
+          "pagination": null,
           "headers": {
             "Accept": "application/json",
             "Content-Type": "application/json",
