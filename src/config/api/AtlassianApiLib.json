@@ -6,10 +6,10 @@
       "vendor": "Atlassian",
       "product": "jira",
       "offer": "cloud",
-      "baseURL": "${JIRA_DOMAIN}",
+      "baseURL": "${NEOEN_JIRA_DOMAIN}",
       "apiAccess": {
-        "userEnv": "JIRA_LOGIN",
-        "tokenEnv": "JIRA_TOKEN"
+        "userEnv": "NEOEN_JIRA_LOGIN",
+        "tokenEnv": "NEOEN_JIRA_TOKEN"
       },
       "pagination": {
         "cursor": {

@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 import { ApiConfigService } from './core/utils/ApiConfigService';
 import { ApiServiceManager } from './core/utils/ApiServiceManager';
 import { JiraPage } from './config/apiInterfaces/JiraPage';
-import { QueryParams, CountIssuesQueryParams, GetIssuesQueryParams } from './config/apiInterfaces/QueryParams';
+import { CountIssuesQueryParams, GetIssuesQueryParams } from './config/apiInterfaces/QueryParams';
 import { upsertIssues } from './customerAndProjectManager/neoen/persistence/sqlite';
 
 const jql: string = 'project = PBPD';
@@ -24,7 +24,7 @@ async function main() {
     process.exit(1);
   }
   const data: JiraPage[] = await (await ApiServiceManager.getInstance(apiLibPath)).getData('Atlassian', 'getIssues', params);
-  upsertIssues('/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/demo.db', data);
+  //upsertIssues('/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/demo.db', data);
   //const count: any = await (await ApiServiceManager.getInstance(apiLibPath)).getData('Atlassian', 'CountIssues', countParams);
   // Pour chaque page
   data.forEach((page, pIdx) => {

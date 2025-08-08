@@ -35,8 +35,6 @@ export class ApiServiceManager {
       throw new Error(`Endpoint '${endpointName}' introuvable pour le vendor '${vendorName}'.`);
     }
 
-    console.log(endpoint);
-
     // 2) Construire la première requête
     const requestConfig = await this.buildRequestConfig(vendorName, endpoint, params);
 
