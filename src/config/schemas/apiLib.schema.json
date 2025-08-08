@@ -24,10 +24,7 @@
           },
           "baseURL": {
             "type": "string",
-            "anyOf": [
-              { "format": "uri" },
-              { "pattern": "^\\$\\{[A-Z0-9_]+\\}$" }
-            ]
+            "anyOf": [{ "format": "uri" }, { "pattern": "^\\$\\{[A-Z0-9_]+\\}$" }]
           },
           "apiAccess": {
             "type": "object",

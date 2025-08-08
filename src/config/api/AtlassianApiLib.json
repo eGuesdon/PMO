@@ -16,7 +16,8 @@
           "initialToken": null,
           "nextTokenField": "nextPageToken",
           "pageSizeField": "maxResults",
-          "defaultPageSize": 50
+          "defaultPageSize": 100,
+          "lastField": "isLast"
         }
       },
       "timeoutMs": 30000,
@@ -45,7 +46,7 @@
           "family": "search",
           "path": "/rest/api/3/search/approximate-count",
           "method": "POST",
-          "pagination": null,
+          "pagination": "none",
           "headers": {
             "Accept": "application/json",
             "Content-Type": "application/json",

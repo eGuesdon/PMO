@@ -11,21 +11,24 @@ export interface EndpointConfig {
    * If omitted, the entry-level pagination applies.
    * If null, pagination is disabled.
    */
-  pagination?: null | {
-    // Cursor-based pagination parameters
-    cursor?: {
-      initialToken: string | null;
-      nextTokenField: string;
-      pageSizeField: string;
-      defaultPageSize: number;
-    };
-    // Offset-based pagination parameters
-    offset?: {
-      offsetField: string;
-      limitField: string;
-      defaultLimit: number;
-    };
-  };
+  pagination?:
+    | 'none'
+    | {
+        // Cursor-based pagination parameters
+        cursor?: {
+          initialToken: string | null;
+          nextTokenField: string;
+          pageSizeField: string;
+          defaultPageSize: number;
+          lastField: string;
+        };
+        // Offset-based pagination parameters
+        offset?: {
+          offsetField: string;
+          limitField: string;
+          defaultLimit: number;
+        };
+      };
   method: string;
   headers: Record<string, string>;
 }

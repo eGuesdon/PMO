@@ -28,18 +28,20 @@ export class ApiServiceManager {
    * @param endpointName Nom de l'endpoint (case-insensitive)
    * @param params Paramètres de requête (query/body)
    */
-  public async getData(vendorName: string, endpointName: string, params: QueryParams): Promise<any[]> {
+  public async getData<P extends QueryParams = QueryParams>(vendorName: string, endpointName: string, params: P): Promise<any[]> {
     // 1) Récupérer la configuration de l'endpoint
     const endpoint: EndpointConfig | undefined = await this.apiConfig.getEndpoint(vendorName, endpointName);
     if (!endpoint) {
       throw new Error(`Endpoint '${endpointName}' introuvable pour le vendor '${vendorName}'.`);
     }
 
+    console.log(endpoint);
+
     // 2) Construire la première requête
     const requestConfig = await this.buildRequestConfig(vendorName, endpoint, params);
 
     // 3) Gérer la pagination
-    const allData = await this.handlePagination(requestConfig, endpoint);
+    const allData = await this.handlePagination(requestConfig, endpoint, vendorName);
 
     // 4) Décoder les données (ex: dates)
     return this.decodeData(allData);
@@ -96,16 +98,57 @@ export class ApiServiceManager {
   /**
    * Exécute les appels HTTP page par page selon la config de pagination
    */
-  private async handlePagination(requestConfig: { url: string; options: RequestInit }, endpoint: EndpointConfig): Promise<any[]> {
-    // Par défaut, si endpoint.pagination est null ou undefined, on effectue un seul appel
-    if (endpoint.pagination == null) {
+  private async handlePagination(requestConfig: { url: string; options: RequestInit }, endpoint: EndpointConfig, vendorName: string): Promise<any[]> {
+    // 1) déduire la config effective
+    let pagCfg = endpoint.pagination;
+    if (pagCfg === undefined) {
+      const entrySvc = await this.apiConfig.getVendorService(vendorName);
+      const entryCfg = entrySvc.getConfig();
+      pagCfg = entryCfg.pagination;
+    }
+
+    // 2) pas de pagination
+    if (pagCfg === 'none' || pagCfg == null) {
       const res = await fetch(requestConfig.url, requestConfig.options);
       if (!res.ok) throw new Error(`HTTP ${res.status} for ${endpoint.name}`);
       const json = await res.json();
       return Array.isArray(json) ? json : [json];
     }
-    // TODO: implémenter pagination avancée via endpoint.pagination.cursor ou .offset
-    throw new Error('Pagination avancée non encore implémentée.');
+
+    // 3) pagination cursor-based
+    if (pagCfg.cursor) {
+      const results: any[] = [];
+      let nextToken: string | null = pagCfg.cursor.initialToken;
+      let keepGoing = true;
+
+      while (keepGoing) {
+        // construire URL pour cette page
+        const pageUrl = new URL(requestConfig.url);
+        pageUrl.searchParams.set(pagCfg.cursor.pageSizeField, String(pagCfg.cursor.defaultPageSize));
+        if (nextToken) {
+          pageUrl.searchParams.set(pagCfg.cursor.nextTokenField, nextToken);
+        }
+
+        const res = await fetch(pageUrl.toString(), requestConfig.options);
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status} for ${endpoint.name}`);
+        }
+        const payload = await res.json();
+        // on suppose que la réponse contient un tableau principal (ex: payload.issues ou payload.data)
+        // ici on le renvoie tel quel pour être assemblé par l’appelant
+        results.push(payload);
+
+        // décider si on continue
+        keepGoing = payload[pagCfg.cursor.lastField] === false;
+        nextToken = payload[pagCfg.cursor.nextTokenField] ?? null;
+      }
+
+      return results;
+    }
+
+    // 4) (optionnel) offset-based à implémenter ultérieurement…
+
+    throw new Error('Type de pagination non supporté.');
   }
 
   /**
