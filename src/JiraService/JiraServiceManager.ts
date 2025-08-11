@@ -37,6 +37,7 @@ export type IssuesPage = { total?: number; issues?: JiraIssue[] };
 const OPS = {
   projectsOp: 'getProjects',
   issuesOp: 'getIssues',
+  countIssuesOp: 'countIssues',
 } as const;
 
 export class JiraServiceManager {
@@ -44,6 +45,7 @@ export class JiraServiceManager {
   private static instance: JiraServiceManager | null = null;
   private apiLibPath: string;
   private cachedAll: ProjectWithStatus[] | null = null;
+  private cachedSignature: string | null = null;
 
   // constructeur privé => singleton
   private constructor(apiLibPath?: string) {
@@ -71,8 +73,20 @@ export class JiraServiceManager {
       expand: params.expand ?? 'insight,lead',
       ...(params as any),
     } as GetProjectsQueryParams;
-    const pages: ProjectsPage[] = await (await this.api()).getData('Atlassian', OPS.projectsOp, qp);
-    return (pages ?? []).flatMap((p) => p?.values ?? []);
+    const items: JiraProject[] = await (await this.api()).getData('Atlassian', OPS.projectsOp, qp);
+
+    // DEBUG (normalisé): afficher un échantillon si besoin
+    if (process.env.JIRA_DEBUG_PAGINATION === '1') {
+      try {
+        const sample = (items || []).slice(0, 3).map((p) => ({ id: p.id, key: p.key, name: p.name }));
+        // eslint-disable-next-line no-console
+        console.log('[Jira][project/search] normalized items count =', Array.isArray(items) ? items.length : 0);
+        // eslint-disable-next-line no-console
+        console.log('[Jira][project/search] sample =', sample);
+      } catch (_) {}
+    }
+
+    return items ?? [];
   }
 
   /** Retourne les projets pour un statut donné (live/archived) et marque le statut localement. */
@@ -83,10 +97,23 @@ export class JiraServiceManager {
 
   /** Récupère tous les projets (live + archived), avec un statut calculé. Mise en cache. */
   async getAllProjectsWithStatus(params?: Partial<GetProjectsQueryParams>): Promise<ProjectWithStatus[]> {
-    if (this.cachedAll) return this.cachedAll;
-    const [live, archived] = await Promise.all([this.getProjectsByStatus('live', params), this.getProjectsByStatus('archived', params)]);
+    const signature = JSON.stringify({ expand: params?.expand ?? 'insight,lead' });
+    if (this.cachedAll && this.cachedSignature === signature) return this.cachedAll;
+
+    const [live, archived] = await Promise.all([
+      this.getProjectsByStatus('live', params),
+      this.getProjectsByStatus('archived', params),
+    ]);
+
     this.cachedAll = [...live, ...archived];
+    this.cachedSignature = signature;
     return this.cachedAll;
+  }
+
+  /** Invalide le cache interne des projets. */
+  invalidateProjectCache() {
+    this.cachedAll = null;
+    this.cachedSignature = null;
   }
 
   // --- Projets --------------------------------------------------------------
@@ -111,8 +138,13 @@ export class JiraServiceManager {
   }
 
   /** Liste (clé, nom) des projets live. */
-  async listLiveProjects(params?: Partial<GetProjectsQueryParams>): Promise<Array<{ key: string; name: string; totalIssueCount?: number; leadName?: string }>> {
-    return (await this.getLiveProjects(params)).map((p) => ({ key: p.key, name: p.name, totalIssueCount: p.insight?.totalIssueCount, leader: p.lead?.displayName }));
+  async listLiveProjects(params?: Partial<GetProjectsQueryParams>): Promise<Array<{ key: string; name: string; totalIssueCount?: number; leader?: string }>> {
+    return (await this.getLiveProjects(params)).map((p) => ({
+      key: p.key,
+      name: p.name,
+      totalIssueCount: p.insight?.totalIssueCount,
+      leader: p.lead?.displayName,
+    }));
   }
 
   /** Projets groupés par lead (displayName/compte). */
@@ -132,16 +164,18 @@ export class JiraServiceManager {
     const fromCache = this.cachedAll?.find((p) => p.key === projectKey)?.insight?.totalIssueCount;
     if (typeof fromCache === 'number') return fromCache;
 
-    // fallback par /search (total)
-    const pages: IssuesPage[] = await (await this.api()).getData('Atlassian', OPS.issuesOp, { jql: `project = ${projectKey}`, maxResults: 0 });
-    return pages?.[0]?.total ?? 0;
+    // fallback via approximate-count (POST)
+    const resp: any[] = await (await this.api()).getData('Atlassian', OPS.countIssuesOp, { jql: `project = ${projectKey}` } as any);
+
+    const obj = Array.isArray(resp) ? resp[0] : resp;
+    const n = (obj && (obj.total ?? obj.count ?? obj.value)) as number | undefined;
+    return typeof n === 'number' ? n : 0;
   }
 
   /** Nombre d'issues pour plusieurs projets. */
   async getIssueCountsByProject(keys: string[]): Promise<Record<string, number>> {
-    const out: Record<string, number> = {};
-    for (const k of keys) out[k] = await this.getIssueCountByProject(k);
-    return out;
+    const pairs = await Promise.all(keys.map(async (k) => [k, await this.getIssueCountByProject(k)] as const));
+    return Object.fromEntries(pairs);
   }
 
   /** Dernière date de mise à jour par projet (préfère insight.lastIssueUpdateTime). */
@@ -153,14 +187,14 @@ export class JiraServiceManager {
         out[k] = cached;
         continue;
       }
-      const pages: IssuesPage[] = await (
+      const issues: JiraIssue[] = await (
         await this.api()
       ).getData('Atlassian', OPS.issuesOp, {
         jql: `project = ${k} ORDER BY updated DESC`,
         fields: ['updated'],
         maxResults: 1,
-      });
-      out[k] = pages?.[0]?.issues?.[0]?.fields?.updated ?? null;
+      } as any);
+      out[k] = issues?.[0]?.fields?.updated ?? null;
     }
     return out;
   }

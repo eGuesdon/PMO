@@ -22,6 +22,8 @@ const countParams: CountIssuesQueryParams = {
 const GetFieldsQueryParams = {};
 
 const GetProjectsQueryParams = {
+  startAt: 0,
+  maxResults: 10,
   expand: 'insight,lead',
   status: ['archived', 'live'],
 };
@@ -62,7 +64,7 @@ async function init() {
 }
 
 async function main() {
-  const jsm:{ key: string; name: string; }[] = await JiraServiceManager.getInstance().listLiveProjects();
+  const jsm: { key: string; name: string }[] = await JiraServiceManager.getInstance().listLiveProjects(GetProjectsQueryParams);
   console.log(jsm);
 }
 

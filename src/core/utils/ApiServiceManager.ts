@@ -61,7 +61,15 @@ export class ApiServiceManager {
     const url = new URL(endpoint.path, baseURL);
     if (endpoint.method.toUpperCase() === 'GET' && params) {
       Object.entries(params).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) {
+        if (value === undefined || value === null) return;
+        if (Array.isArray(value)) {
+          value.forEach((v) => {
+            if (v !== undefined && v !== null) url.searchParams.append(key, String(v));
+          });
+        } else if (typeof value === 'object') {
+          // Conserver la structure si l'API attend un JSON (rare en GET), sinon fallback string
+          url.searchParams.append(key, JSON.stringify(value));
+        } else {
           url.searchParams.append(key, String(value));
         }
       });
@@ -113,29 +121,21 @@ export class ApiServiceManager {
     }
 
     // Normaliser le mode de pagination pour éviter les comparaisons de types non chevauchants
-    const pagMode: 'none' | 'pagebean' | 'cursor' | 'offset' | undefined =
-      typeof pagCfg === 'string'
-        ? (pagCfg as any)
-        : (pagCfg && typeof pagCfg === 'object' && (pagCfg as any).mode)
-        ? ((pagCfg as any).mode as any)
-        : (pagCfg && typeof pagCfg === 'object' && (pagCfg as any).cursor)
-        ? 'cursor'
-        : (pagCfg && typeof pagCfg === 'object' && (pagCfg as any).offset)
-        ? 'offset'
-        : undefined;
+    const pagMode: 'none' | 'pagebean' | 'cursor' | 'offset' | undefined = typeof pagCfg === 'string' ? (pagCfg as any) : pagCfg && typeof pagCfg === 'object' && (pagCfg as any).mode ? ((pagCfg as any).mode as any) : pagCfg && typeof pagCfg === 'object' && (pagCfg as any).cursor ? 'cursor' : pagCfg && typeof pagCfg === 'object' && (pagCfg as any).offset ? 'offset' : undefined;
 
     // 2) pas de pagination
     if (pagMode === 'none' || pagMode == null) {
       const res = await fetch(requestConfig.url, requestConfig.options);
       if (!res.ok) throw new Error(`HTTP ${res.status} for ${endpoint.name}`);
       const json = await res.json();
-      return Array.isArray(json) ? json : [json];
+      return this.extractItems(json, endpoint);
     }
 
     // 3) pagination pagebean (Jira PageBean: isLast, nextPage, startAt, maxResults, total, values[])
     if (pagMode === 'pagebean') {
       const results: any[] = [];
       let pageUrl = new URL(requestConfig.url);
+      const baseUrl = new URL(requestConfig.url); // conserver les params initiaux (expand, status, fields…)
 
       // On boucle tant que la page courante n'est pas la dernière
       /* eslint-disable no-constant-condition */
@@ -145,7 +145,7 @@ export class ApiServiceManager {
           throw new Error(`HTTP ${res.status} for ${endpoint.name}`);
         }
         const payload = await res.json();
-        results.push(payload);
+        results.push(...this.extractItems(payload, endpoint));
 
         const isLast: boolean | undefined = payload?.isLast;
         const nextPage: string | undefined = payload?.nextPage;
@@ -162,6 +162,12 @@ export class ApiServiceManager {
         // Préférence: suivre nextPage si fourni par l'API
         if (nextPage) {
           pageUrl = new URL(nextPage);
+          // Réinjecter les params initiaux s’ils ont disparu dans nextPage
+          baseUrl.searchParams.forEach((val, key) => {
+            if (!pageUrl.searchParams.has(key)) {
+              pageUrl.searchParams.set(key, val);
+            }
+          });
           continue;
         }
 
@@ -210,9 +216,7 @@ export class ApiServiceManager {
           throw new Error(`HTTP ${res.status} for ${endpoint.name}`);
         }
         const payload = await res.json();
-        // on suppose que la réponse contient un tableau principal (ex: payload.issues ou payload.data)
-        // ici on le renvoie tel quel pour être assemblé par l’appelant
-        results.push(payload);
+        results.push(...this.extractItems(payload, endpoint));
 
         // décider si on continue
         keepGoing = payload[cfg.lastField] === false;
@@ -264,5 +268,29 @@ export class ApiServiceManager {
       return `Bearer ${token}`;
     }
     throw new Error('Missing credentials: cannot build Authorization header');
+  }
+
+  private extractItems(payload: any, endpoint: EndpointConfig): any[] {
+    let out: any[] | undefined;
+    const path = (endpoint as any)?.itemsPath as string | undefined;
+
+    if (path && Array.isArray(payload?.[path])) out = payload[path];
+    if (!out) {
+      const candidates = ['issues', 'values', 'data', 'elements', 'results', 'items'];
+      for (const k of candidates) {
+        if (Array.isArray(payload?.[k])) {
+          out = payload[k];
+          break;
+        }
+      }
+    }
+    if (!out) out = Array.isArray(payload) ? payload : [payload];
+
+    if (process.env.JIRA_DEBUG_PAGINATION === '1') {
+      const sampleKeys = Object.keys(out[0] || {}).slice(0, 6);
+      // eslint-disable-next-line no-console
+      console.log(`[extractItems] ${endpoint.name} path=${path || 'auto'} size=${out.length} sampleKeys=${sampleKeys.join(',')}`);
+    }
+    return out;
   }
 }
