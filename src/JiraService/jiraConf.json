@@ -1,0 +1,18 @@
+{
+  "entries": [
+    {
+      "clientName": "Neoen",
+      "projectIDList" : [
+        {
+            "projectName" : "",
+            "projectKey" : "",
+            "projectType" : "",
+            "projectLead" : ""
+        }
+      ]
+    },
+    {
+      "clientName": "Macif"
+    }
+  ]
+}

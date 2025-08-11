@@ -9,3 +9,4 @@ export interface JiraPage<T = any> {
   /** Indique si c’est la dernière page */
   isLast?: boolean;
 }
+

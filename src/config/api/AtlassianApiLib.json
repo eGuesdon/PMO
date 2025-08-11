@@ -29,14 +29,14 @@
       "endpoints": [
         {
           "name": "getIssues",
-          "operationId": "search",
+          "operationId": "getIssues",
           "enabled": true,
           "family": "search",
           "path": "/rest/api/3/search/jql",
           "method": "GET",
           "headers": {
             "Accept": "application/json",
-            "Authorization": "Bearer ${JIRA_TOKEN}"
+            "Authorization": "${AUTH_HEADER}"
           }
         },
         {
@@ -50,7 +50,35 @@
           "headers": {
             "Accept": "application/json",
             "Content-Type": "application/json",
-            "Authorization": "Bearer ${JIRA_TOKEN}"
+            "Authorization": "${AUTH_HEADER}"
+          }
+        },
+        {
+          "name": "getFields",
+          "operationId": "getFields",
+          "enabled": true,
+          "family": "Fields",
+          "path": "/rest/api/3/field",
+          "method": "GET",
+          "pagination": "none",
+          "headers": {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "${AUTH_HEADER}"
+          }
+        },
+        {
+          "name": "getProjects",
+          "operationId": "getProjects",
+          "enabled": true,
+          "family": "Project",
+          "path": "/rest/api/3/project/search",
+          "method": "GET",
+          "pagination": "pagebean",
+          "headers": {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "${AUTH_HEADER}"
           }
         }
       ]

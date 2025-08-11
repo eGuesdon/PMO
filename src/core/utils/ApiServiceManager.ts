@@ -75,12 +75,19 @@ export class ApiServiceManager {
       headers['Content-Type'] = headers['Content-Type'] || 'application/json';
     }
 
-    // Auth Basic basé sur apiAccess
-    if (entryConfig.apiAccess) {
-      const login = process.env[entryConfig.apiAccess.userEnv] || '';
-      const token = process.env[entryConfig.apiAccess.tokenEnv] || '';
-      const basic = 'Basic ' + Buffer.from(`${login}:${token}`).toString('base64');
-      headers['Authorization'] = basic;
+    // Remplacer les placeholders d'env dans les headers (ex: ${AUTH_HEADER}, ${XYZ})
+    Object.keys(headers).forEach((key) => {
+      const v = headers[key];
+      if (typeof v === 'string') {
+        headers[key] = v.replace(/\$\{(\w+)\}/g, (_, envName) => process.env[envName] || '');
+      }
+    });
+
+    // Si Authorization est demandé via placeholder ou manquant, le construire selon apiAccess
+    if (!headers['Authorization'] || headers['Authorization'] === '') {
+      headers['Authorization'] = this.buildAuthHeader(entryConfig);
+    } else if (headers['Authorization'] === '${AUTH_HEADER}') {
+      headers['Authorization'] = this.buildAuthHeader(entryConfig);
     }
 
     return {
@@ -105,26 +112,97 @@ export class ApiServiceManager {
       pagCfg = entryCfg.pagination;
     }
 
+    // Normaliser le mode de pagination pour éviter les comparaisons de types non chevauchants
+    const pagMode: 'none' | 'pagebean' | 'cursor' | 'offset' | undefined =
+      typeof pagCfg === 'string'
+        ? (pagCfg as any)
+        : (pagCfg && typeof pagCfg === 'object' && (pagCfg as any).mode)
+        ? ((pagCfg as any).mode as any)
+        : (pagCfg && typeof pagCfg === 'object' && (pagCfg as any).cursor)
+        ? 'cursor'
+        : (pagCfg && typeof pagCfg === 'object' && (pagCfg as any).offset)
+        ? 'offset'
+        : undefined;
+
     // 2) pas de pagination
-    if (pagCfg === 'none' || pagCfg == null) {
+    if (pagMode === 'none' || pagMode == null) {
       const res = await fetch(requestConfig.url, requestConfig.options);
       if (!res.ok) throw new Error(`HTTP ${res.status} for ${endpoint.name}`);
       const json = await res.json();
       return Array.isArray(json) ? json : [json];
     }
 
-    // 3) pagination cursor-based
-    if (pagCfg.cursor) {
+    // 3) pagination pagebean (Jira PageBean: isLast, nextPage, startAt, maxResults, total, values[])
+    if (pagMode === 'pagebean') {
       const results: any[] = [];
-      let nextToken: string | null = pagCfg.cursor.initialToken;
+      let pageUrl = new URL(requestConfig.url);
+
+      // On boucle tant que la page courante n'est pas la dernière
+      /* eslint-disable no-constant-condition */
+      while (true) {
+        const res = await fetch(pageUrl.toString(), requestConfig.options);
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status} for ${endpoint.name}`);
+        }
+        const payload = await res.json();
+        results.push(payload);
+
+        const isLast: boolean | undefined = payload?.isLast;
+        const nextPage: string | undefined = payload?.nextPage;
+        const maxResults: number = Number(payload?.maxResults ?? 0);
+        const startAt: number = Number(payload?.startAt ?? 0);
+        const total: number = Number(payload?.total ?? NaN);
+        const valuesLen: number = Array.isArray(payload?.values) ? payload.values.length : 0;
+
+        // Condition d'arrêt prioritaire
+        if (isLast === true) {
+          break;
+        }
+
+        // Préférence: suivre nextPage si fourni par l'API
+        if (nextPage) {
+          pageUrl = new URL(nextPage);
+          continue;
+        }
+
+        // Fallback: calculer startAt suivant
+        const increment = maxResults || valuesLen || 0;
+        const nextStartAt = startAt + increment;
+
+        // Gardes-fous d'arrêt
+        if (Number.isFinite(total) && nextStartAt >= total) {
+          break;
+        }
+        if (maxResults && valuesLen < maxResults) {
+          break;
+        }
+        if (!increment) {
+          // aucune progression possible
+          break;
+        }
+
+        pageUrl.searchParams.set('startAt', String(nextStartAt));
+        if (!pageUrl.searchParams.has('maxResults') && maxResults) {
+          pageUrl.searchParams.set('maxResults', String(maxResults));
+        }
+      }
+
+      return results;
+    }
+
+    // 4) pagination cursor-based
+    if (pagMode === 'cursor' && (pagCfg as any).cursor) {
+      const cfg = (pagCfg as any).cursor;
+      const results: any[] = [];
+      let nextToken: string | null = cfg.initialToken;
       let keepGoing = true;
 
       while (keepGoing) {
         // construire URL pour cette page
         const pageUrl = new URL(requestConfig.url);
-        pageUrl.searchParams.set(pagCfg.cursor.pageSizeField, String(pagCfg.cursor.defaultPageSize));
+        pageUrl.searchParams.set(cfg.pageSizeField, String(cfg.defaultPageSize));
         if (nextToken) {
-          pageUrl.searchParams.set(pagCfg.cursor.nextTokenField, nextToken);
+          pageUrl.searchParams.set(cfg.nextTokenField, nextToken);
         }
 
         const res = await fetch(pageUrl.toString(), requestConfig.options);
@@ -137,14 +215,14 @@ export class ApiServiceManager {
         results.push(payload);
 
         // décider si on continue
-        keepGoing = payload[pagCfg.cursor.lastField] === false;
-        nextToken = payload[pagCfg.cursor.nextTokenField] ?? null;
+        keepGoing = payload[cfg.lastField] === false;
+        nextToken = payload[cfg.nextTokenField] ?? null;
       }
 
       return results;
     }
 
-    // 4) (optionnel) offset-based à implémenter ultérieurement…
+    // 5) (optionnel) offset-based à implémenter ultérieurement…
 
     throw new Error('Type de pagination non supporté.');
   }
@@ -155,5 +233,36 @@ export class ApiServiceManager {
   private decodeData(data: any[]): any[] {
     // TODO: implémenter les conversions nécessaires
     return data;
+  }
+
+  /**
+   * Construit l'en-tête Authorization selon la config d'accès API
+   * Règles:
+   *  - scheme === 'bearer' -> Bearer <tokenEnv>
+   *  - par défaut: si userEnv & tokenEnv -> Basic base64(user:token), sinon si tokenEnv seul -> Bearer
+   */
+  private buildAuthHeader(entryConfig: any): string {
+    const scheme = entryConfig?.apiAccess?.scheme as string | undefined;
+    const userEnv = entryConfig?.apiAccess?.userEnv as string | undefined;
+    const tokenEnv = entryConfig?.apiAccess?.tokenEnv as string | undefined;
+
+    const user = userEnv ? process.env[userEnv] : undefined;
+    const token = tokenEnv ? process.env[tokenEnv] : undefined;
+
+    if (scheme === 'bearer') {
+      if (!token) throw new Error('Missing token for bearer scheme');
+      return `Bearer ${token}`;
+    }
+
+    // Default/fallback behaviour
+    if (user && token) {
+      const raw = `${user}:${token}`;
+      const b64 = Buffer.from(raw, 'utf8').toString('base64');
+      return `Basic ${b64}`;
+    }
+    if (token) {
+      return `Bearer ${token}`;
+    }
+    throw new Error('Missing credentials: cannot build Authorization header');
   }
 }
