@@ -287,6 +287,7 @@ export class ApiServiceManager {
     if (!out) out = Array.isArray(payload) ? payload : [payload];
 
     if (process.env.JIRA_DEBUG_PAGINATION === '1') {
+      console.log('process.env.JIRA_DEBUG_PAGINATION ' + process.env.JIRA_DEBUG_PAGINATION);
       const sampleKeys = Object.keys(out[0] || {}).slice(0, 6);
       // eslint-disable-next-line no-console
       console.log(`[extractItems] ${endpoint.name} path=${path || 'auto'} size=${out.length} sampleKeys=${sampleKeys.join(',')}`);

@@ -25,7 +25,7 @@ const GetProjectsQueryParams = {
   startAt: 0,
   maxResults: 10,
   expand: 'insight,lead',
-  status: ['archived', 'live'],
+  status: ['live'],
 };
 
 async function init() {
@@ -64,8 +64,10 @@ async function init() {
 }
 
 async function main() {
-  const jsm: { key: string; name: string }[] = await JiraServiceManager.getInstance().listLiveProjects(GetProjectsQueryParams);
-  console.log(jsm);
+  const jsm: JiraProject[] = await JiraServiceManager.getInstance().getProjectList(GetProjectsQueryParams);
+  jsm.forEach((item, index) => {
+    console.log(item.key);
+  });
 }
 
 main();
