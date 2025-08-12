@@ -3,8 +3,8 @@ import fetch from 'node-fetch';
 import { ApiConfigService } from './core/utils/ApiConfigService';
 import { ApiServiceManager } from './core/utils/ApiServiceManager';
 import { JiraPage } from './JiraService/jiraApiInterfaces/JiraPage';
-import JiraServiceManager, { JiraProject } from './JiraService/JiraServiceManager';
-import { CountIssuesQueryParams, GetIssuesQueryParams } from './JiraService/jiraApiInterfaces/QueryParams';
+import JiraServiceManager, { JiraInstanceField, JiraProject } from './JiraService/JiraServiceManager';
+import { CountIssuesQueryParams, GerFieldsQueryParmas, GetFieldsQueryParams, GetIssuesQueryParams, GetProjectsQueryParams } from './JiraService/jiraApiInterfaces/QueryParams';
 import { upsertIssues } from './JiraService/persistence/sqlite';
 import { ProjectPage } from './JiraService/jiraApiInterfaces/JiraProject';
 
@@ -64,10 +64,10 @@ async function init() {
 }
 
 async function main() {
-  const jsm: JiraProject[] = await JiraServiceManager.getInstance().getProjectList(GetProjectsQueryParams);
-  jsm.forEach((item, index) => {
-    console.log(item.key);
-  });
+  const jif: JiraInstanceField[] = await JiraServiceManager.getInstance().getInstanceFieldList(GetFieldsQueryParams);
+  const jpl: JiraProject[] = await JiraServiceManager.getInstance().getProjectList(GetProjectsQueryParams);
+  console.log('jif[0] ==> ' + jif[0].name);
+  console.log('jpl[0] ==> ' + jpl[0].name);
 }
 
 main();

@@ -29,3 +29,14 @@ export interface GetProjectsQueryParams extends QueryParams {
   status?: string[];
   expand?: string;
 }
+
+export interface GerFieldsQueryParmas extends QueryParams {
+  startAt?: number;
+  maxResults?: number;
+  type?: string[];
+  id?: string[];
+  query?: string;
+  orderBy: string;
+  expand: string;
+  projectIds: number[];
+}

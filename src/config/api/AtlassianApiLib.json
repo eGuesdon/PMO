@@ -60,9 +60,10 @@
           "operationId": "getFields",
           "enabled": true,
           "family": "Fields",
-          "path": "/rest/api/3/field",
+          "path": "/rest/api/3/field/search",
           "method": "GET",
-          "pagination": "none",
+          "pagination": "pagebean",
+          "itemsPath": "values",
           "headers": {
             "Accept": "application/json",
             "Content-Type": "application/json",

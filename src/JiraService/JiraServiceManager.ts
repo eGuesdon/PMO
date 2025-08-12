@@ -2,7 +2,7 @@ import 'dotenv/config';
 // Utilise l'ApiServiceManager existant pour tous les appels
 import { ApiServiceManager } from '../core/utils/ApiServiceManager';
 // Import des Query Params (dont GetProjectsQueryParams)
-import { GetProjectsQueryParams } from './jiraApiInterfaces/QueryParams';
+import { GerFieldsQueryParmas, GetProjectsQueryParams } from './jiraApiInterfaces/QueryParams';
 
 // --- Types (minimaux, adaptés à l'usage) -----------------------------------
 export type JiraProject = {
@@ -23,6 +23,17 @@ export type JiraProject = {
   } | null;
 };
 
+export type JiraInstanceField = {
+  id: string;
+  name: string;
+  schema: {
+    type: string;
+    custom: string;
+    customId?: number;
+  };
+  description: string;
+};
+
 export type ProjectWithStatus = JiraProject & { status: 'live' | 'archived' };
 
 export type JiraIssue = {
@@ -38,6 +49,7 @@ const OPS = {
   projectsOp: 'getProjects',
   issuesOp: 'getIssues',
   countIssuesOp: 'countIssues',
+  getFields: 'getFields',
 } as const;
 
 export default class JiraServiceManager {
@@ -81,8 +93,13 @@ export default class JiraServiceManager {
 
   /** Liste (clé, nom) des projets selon filtres éventuels (GetProjectsQueryParams). */
   public async getProjectList(params?: Partial<GetProjectsQueryParams>): Promise<Array<JiraProject>> {
-    const projects = await this.fetchProjects(params ?? {}, OPS.projectsOp);
-    return projects;
+    const projects: JiraProject[] = await (await this.api()).getData('Atlassian', OPS.projectsOp, params ?? {});
+    return projects ?? [];
+  }
+
+  public async getInstanceFieldList(params?: Partial<GerFieldsQueryParmas>): Promise<Array<JiraInstanceField>> {
+    const fields: JiraInstanceField[] = await (await this.api()).getData('Atlassian', OPS.getFields, params ?? {});
+    return fields ?? [];
   }
 
   // --- Pack "première heure" ----------------------------------------------
