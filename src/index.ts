@@ -1,13 +1,3 @@
-import 'dotenv/config';
-import fetch from 'node-fetch';
-import { ApiConfigService } from './core/utils/ApiConfigService';
-import { ApiServiceManager } from './core/utils/ApiServiceManager';
-import { JiraPage } from './JiraService/jiraApiInterfaces/JiraPage';
-import JiraServiceManager, { JiraInstanceField, JiraProject } from './JiraService/JiraServiceManager';
-import { CountIssuesQueryParams, GerFieldsQueryParmas, GetFieldsQueryParams, GetIssuesQueryParams, GetProjectsQueryParams } from './JiraService/jiraApiInterfaces/QueryParams';
-import { upsertIssues } from './JiraService/persistence/sqlite';
-import { ProjectPage } from './JiraService/jiraApiInterfaces/JiraProject';
-
 const jql: string = 'project = PBPD';
 
 const params: GetIssuesQueryParams = {
