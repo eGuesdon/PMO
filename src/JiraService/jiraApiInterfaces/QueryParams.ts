@@ -30,7 +30,7 @@ export interface GetProjectsQueryParams extends QueryParams {
   expand?: string;
 }
 
-export interface GerFieldsQueryParmas extends QueryParams {
+export interface GetFieldsQueryParams extends QueryParams {
   startAt?: number;
   maxResults?: number;
   type?: string[];
@@ -39,4 +39,9 @@ export interface GerFieldsQueryParmas extends QueryParams {
   orderBy: string;
   expand: string;
   projectIds: number[];
+}
+
+export interface GetIssuesTypeQueryParams extends QueryParams {
+  projectId: number;
+  level?: number;
 }

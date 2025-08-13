@@ -1,3 +1,7 @@
+import BazefieldManager from './CustomerAndServiceManager/BazefieldManager';
+import { CountIssuesQueryParams, GetIssuesQueryParams } from './JiraService/jiraApiInterfaces/QueryParams';
+import JiraServiceManager, { JiraProject } from './JiraService/JiraServiceManager';
+
 const jql: string = 'project = PBPD';
 
 const params: GetIssuesQueryParams = {
@@ -18,46 +22,11 @@ const GetProjectsQueryParams = {
   status: ['live'],
 };
 
-async function init() {
-  const apiLibPath = process.env.API_LIB;
-  if (!apiLibPath) {
-    console.error('❌ La variable d’environnement API_LIB n’est pas définie.');
-    process.exit(1);
-  }
-  //const data: JiraPage[] = await (await ApiServiceManager.getInstance(apiLibPath)).getData('Atlassian', 'getIssues', params);
-  //upsertIssues('/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/demo.db', data);
-  //const count: any = await (await ApiServiceManager.getInstance(apiLibPath)).getData('Atlassian', 'CountIssues', countParams);
-  //const fields: any = await (await ApiServiceManager.getInstance(apiLibPath)).getData('Atlassian', 'GetFields', GetFieldsQueryParams);
-  //upsertIssues('/Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO/demo.db', fields);
-  const project: ProjectPage[] = await (await ApiServiceManager.getInstance(apiLibPath)).getData('Atlassian', 'getProjects', GetProjectsQueryParams);
-  // Pour chaque page
-  /**
-   * 
-  data.forEach((page, pIdx) => {
-    console.log(`=== Page ${pIdx + 1} ===`);
-    page.issues.forEach((issue, iIdx) => {
-      console.log(`Issue ${iIdx + 1} sur page ${pIdx + 1}:`);
-      console.dir(issue, { depth: null, colors: true });
-    });
-  });
-  */
-
-  project.forEach((page, pIdx) => {
-    console.log(`=== Page ${pIdx + 1} ===`);
-    page.values.forEach((value, iIdx) => {
-      console.log(`Project ${iIdx + 1} sur page ${pIdx + 1}:`);
-      console.dir(value, { depth: null, colors: true });
-    });
-  });
-
-  //console.log(project);
-}
-
 async function main() {
   //const jif: JiraInstanceField[] = await JiraServiceManager.getInstance().getJiraInstanceFieldList(GetFieldsQueryParams);
   //const jpl: JiraProject[] = await JiraServiceManager.getInstance().getProjectList(GetProjectsQueryParams);
-  const jp: JiraProject = await JiraServiceManager.getInstance().getProjectById('10308', GetProjectsQueryParams);
-  console.log(jp);
+  const PBPD: JiraProject = await BazefieldManager.getInstance().getProjectById('10308', GetProjectsQueryParams);
+  console.log(PBPD);
 }
 
 main();

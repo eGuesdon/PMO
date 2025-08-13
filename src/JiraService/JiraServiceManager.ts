@@ -2,7 +2,7 @@ import 'dotenv/config';
 // Utilise l'ApiServiceManager existant pour tous les appels
 import { ApiServiceManager } from '../core/utils/ApiServiceManager';
 // Import des Query Params (dont GetProjectsQueryParams)
-import { GerFieldsQueryParmas, GetProjectsQueryParams } from './jiraApiInterfaces/QueryParams';
+import { GetFieldsQueryParams, GetIssuesQueryParams, GetIssuesTypeQueryParams, GetProjectsQueryParams } from './jiraApiInterfaces/QueryParams';
 
 // --- Types (minimaux, adaptés à l'usage) -----------------------------------
 export type JiraProject = {
@@ -34,11 +34,30 @@ export type JiraInstanceField = {
   description: string;
 };
 
-export type ProjectWithStatus = JiraProject & { status: 'live' | 'archived' };
-
 export type JiraIssue = {
   key: string;
   fields?: { updated?: string } & Record<string, unknown>;
+};
+
+export type IssueType = {
+  avatarId: number;
+  description: string;
+  entityId: string;
+  hierarchyLevel: number;
+  iconUrl: string;
+  id: string;
+  name: string;
+  scope: {
+    project: {
+      id: string;
+      key: string;
+      name: string;
+      self: string;
+    };
+    type: string;
+  };
+  self: string;
+  subtask: boolean;
 };
 
 export type ProjectsPage = { values?: JiraProject[]; isLast?: boolean };
@@ -50,40 +69,38 @@ const OPS = {
   issuesOp: 'getIssues',
   countIssuesOp: 'countIssues',
   getFields: 'getFields',
+  issueTypesForProject: 'getIssueTypesForProject',
 } as const;
 
-export default class JiraServiceManager {
+export default abstract class JiraServiceManager {
   // #1 Singleton
-  private static instance: JiraServiceManager | null = null;
+  private static instances = new WeakMap<Function, JiraServiceManager>();
   private apiLibPath: string;
-  private cachedAll: ProjectWithStatus[] | null = null;
-  private cachedSignature: string | null = null;
 
   // constructeur privé => singleton
-  private constructor(apiLibPath?: string) {
+  protected constructor(apiLibPath?: string) {
     this.apiLibPath = apiLibPath ?? process.env.API_LIB ?? '';
     if (!this.apiLibPath) {
       throw new Error('API_LIB manquant (dotenv)');
     }
   }
 
-  static getInstance(apiLibPath?: string) {
-    if (!this.instance) this.instance = new JiraServiceManager(apiLibPath);
-    return this.instance;
+  static getInstance(this: typeof JiraServiceManager, apiLibPath?: string): JiraServiceManager {
+    let inst = JiraServiceManager.instances.get(this) as JiraServiceManager | undefined;
+    if (!inst) {
+      const Ctor: any = this; // safe: we are inside the class hierarchy, protected ctor is callable here
+      inst = new Ctor(apiLibPath);
+      JiraServiceManager.instances.set(this, inst!);
+    }
+    return inst!;
   }
 
-  static fromEnv() {
-    return JiraServiceManager.getInstance(process.env.API_LIB);
+  public static fromEnv(this: typeof JiraServiceManager): JiraServiceManager {
+    return this.getInstance(process.env.API_LIB);
   }
 
   private async api() {
     return ApiServiceManager.getInstance(this.apiLibPath);
-  }
-
-  /** Invalide le cache interne des projets. */
-  public invalidateProjectCache() {
-    this.cachedAll = null;
-    this.cachedSignature = null;
   }
 
   /**
@@ -126,9 +143,45 @@ export default class JiraServiceManager {
    * @param params
    * @returns
    */
-  public async getJiraInstanceFieldList(params?: Partial<GerFieldsQueryParmas>): Promise<Array<JiraInstanceField>> {
+  public async getJiraInstanceFieldList(params?: Partial<GetFieldsQueryParams>): Promise<Array<JiraInstanceField>> {
     const fields: JiraInstanceField[] = await (await this.api()).getData('Atlassian', OPS.getFields, params ?? {});
     return fields ?? [];
+  }
+
+  /**
+   *
+   * @param params
+   * @returns
+   */
+  public async getProjectFieldList(params?: Partial<GetFieldsQueryParams>): Promise<Array<JiraInstanceField>> {
+    if (params && !params.projectIds) {
+      throw new Error('Au moins un ID de projet doit être fournit');
+    }
+    const fields: JiraInstanceField[] = await (await this.api()).getData('Atlassian', OPS.getFields, params ?? {});
+    return fields ?? [];
+  }
+
+  /**
+   *
+   * @param params
+   * @returns
+   */
+  public async getIssues(params?: Partial<GetIssuesQueryParams>): Promise<Array<JiraIssue>> {
+    const issues: JiraIssue[] = await (await this.api()).getData('Atlassian', OPS.issuesOp, params ?? {});
+    return issues ?? [];
+  }
+
+  /**
+   *
+   * @param params
+   * @returns
+   */
+  public async getIssueTypesForProject(params?: Partial<GetIssuesTypeQueryParams>): Promise<Array<IssueType>> {
+    if (params && !params.projectId) {
+      throw new Error('La propriété projectId est obligatoire');
+    }
+    const issuesType: IssueType[] = await (await this.api()).getData('Atlassian', OPS.issueTypesForProject, params ?? {});
+    return issuesType ?? [];
   }
 
   // --- Pack "première heure" ----------------------------------------------

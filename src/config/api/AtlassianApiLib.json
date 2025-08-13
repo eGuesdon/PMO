@@ -41,6 +41,19 @@
           }
         },
         {
+          "name": "getIssueTypesForProject",
+          "operationId": "getIssueTypesForProject",
+          "enabled": true,
+          "family": "issuetypes",
+          "path": "/rest/api/3/issuetype/project",
+          "method": "GET",
+          "itemsPath": "",
+          "headers": {
+            "Accept": "application/json",
+            "Authorization": "${AUTH_HEADER}"
+          }
+        },
+        {
           "name": "countIssues",
           "operationId": "count",
           "enabled": true,
