@@ -64,8 +64,8 @@ async function init() {
 }
 
 async function main() {
-  const jif: JiraInstanceField[] = await JiraServiceManager.getInstance().getJiraInstanceFieldList(GetFieldsQueryParams);
-  const jpl: JiraProject[] = await JiraServiceManager.getInstance().getProjectList(GetProjectsQueryParams);
+  //const jif: JiraInstanceField[] = await JiraServiceManager.getInstance().getJiraInstanceFieldList(GetFieldsQueryParams);
+  //const jpl: JiraProject[] = await JiraServiceManager.getInstance().getProjectList(GetProjectsQueryParams);
   const jp: JiraProject = await JiraServiceManager.getInstance().getProjectById('10308', GetProjectsQueryParams);
   console.log(jp);
 }
