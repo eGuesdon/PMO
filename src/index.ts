@@ -64,10 +64,10 @@ async function init() {
 }
 
 async function main() {
-  const jif: JiraInstanceField[] = await JiraServiceManager.getInstance().getInstanceFieldList(GetFieldsQueryParams);
+  const jif: JiraInstanceField[] = await JiraServiceManager.getInstance().getJiraInstanceFieldList(GetFieldsQueryParams);
   const jpl: JiraProject[] = await JiraServiceManager.getInstance().getProjectList(GetProjectsQueryParams);
-  console.log('jif[0] ==> ' + jif[0].name);
-  console.log('jpl[0] ==> ' + jpl[0].name);
+  const jp: JiraProject = await JiraServiceManager.getInstance().getProjectById('10308', GetProjectsQueryParams);
+  console.log(jp);
 }
 
 main();

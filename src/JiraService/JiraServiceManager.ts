@@ -80,24 +80,53 @@ export default class JiraServiceManager {
     return ApiServiceManager.getInstance(this.apiLibPath);
   }
 
-  private async fetchProjects(params: Partial<GetProjectsQueryParams>, ops: string): Promise<JiraProject[]> {
-    const items: JiraProject[] = await (await this.api()).getData('Atlassian', ops, params);
-    return items ?? [];
-  }
-
   /** Invalide le cache interne des projets. */
   public invalidateProjectCache() {
     this.cachedAll = null;
     this.cachedSignature = null;
   }
 
-  /** Liste (clé, nom) des projets selon filtres éventuels (GetProjectsQueryParams). */
+  /**
+   *
+   * Liste (clé, nom) des projets selon filtres éventuels (GetProjectsQueryParams)
+   * @param params
+   * @returns
+   */
   public async getProjectList(params?: Partial<GetProjectsQueryParams>): Promise<Array<JiraProject>> {
     const projects: JiraProject[] = await (await this.api()).getData('Atlassian', OPS.projectsOp, params ?? {});
     return projects ?? [];
   }
 
-  public async getInstanceFieldList(params?: Partial<GerFieldsQueryParmas>): Promise<Array<JiraInstanceField>> {
+  /**
+   *
+   * @param key
+   * @param params
+   * @returns
+   */
+  public async getProjectByKey(key: string, params?: Partial<GetProjectsQueryParams>): Promise<JiraProject> {
+    const projects: JiraProject[] = await this.getProjectList(params);
+    const projet: JiraProject | undefined = projects.find((element) => element.key == key);
+    return projet as JiraProject;
+  }
+
+  /**
+   *
+   * @param id
+   * @param params
+   * @returns
+   */
+  public async getProjectById(id: string, params?: Partial<GetProjectsQueryParams>): Promise<JiraProject> {
+    const projects: JiraProject[] = await this.getProjectList(params);
+    const projet: JiraProject | undefined = projects.find((element) => element.id == id);
+    return projet as JiraProject;
+  }
+
+  /**
+   *
+   * @param params
+   * @returns
+   */
+  public async getJiraInstanceFieldList(params?: Partial<GerFieldsQueryParmas>): Promise<Array<JiraInstanceField>> {
     const fields: JiraInstanceField[] = await (await this.api()).getData('Atlassian', OPS.getFields, params ?? {});
     return fields ?? [];
   }
