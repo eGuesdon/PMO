@@ -5,6 +5,12 @@
             "driver": "SQLite",
             "name": "Demo",
             "database": "${workspaceFolder:PMO}/demo.db"
+        },
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "bazefield",
+            "database": "${workspaceFolder:PMO}//Users/ericguesdon/Documents/Documents - MacBook Pro de Eric/Personnel/Cahe/Eric/PMO"
         }
     ]
 }

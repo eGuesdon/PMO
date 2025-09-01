@@ -4,23 +4,56 @@ import { ApiServiceManager } from '../core/utils/ApiServiceManager';
 // Import des Query Params (dont GetProjectsQueryParams)
 import { GetFieldsQueryParams, GetIssuesQueryParams, GetIssuesTypeQueryParams, GetProjectsQueryParams } from './jiraApiInterfaces/QueryParams';
 
-// --- Types (minimaux, adaptés à l'usage) -----------------------------------
+// --- DB (centralisée ici) ---------------------------------------------------
+import Database from 'better-sqlite3';
+
+// Adaptateur minimal utilisé partout (DB en mémoire/disk, jqlite/better-sqlite3)
+export interface SqlLike {
+  exec(sql: string): unknown;
+  prepare(sql: string): {
+    run: (...params: any[]) => unknown;
+    all: <T = any>(...params: any[]) => T[];
+    get?: <T = any>(...params: any[]) => T | undefined;
+  };
+}
+
+// --- Types (tels que dans ton fichier de base) ------------------------------
 export type JiraProject = {
   id: string;
   key: string;
   name: string;
+  description?: string | null;
+  projectCategory: {
+    description: string;
+    id: string;
+    name: string;
+    self: string;
+  };
+  self: string;
+  simplified: false;
+  style: string;
+  issueTypes?: [
+    {
+      id?: string;
+      name?: string;
+      hierarchyLevel?: number;
+      subtask?: boolean;
+    }?,
+  ];
   lead?: {
     self?: string;
     accountId?: string;
     accountType?: string;
     displayName?: string;
     active?: boolean;
-    avatarUrls?: Record<string, string>;
   } | null;
   insight?: {
     lastIssueUpdateTime?: string;
     totalIssueCount?: number;
   } | null;
+  permissions?: {
+    canEdit?: boolean;
+  };
 };
 
 export type JiraInstanceField = {
@@ -77,37 +110,102 @@ export default abstract class JiraServiceManager {
   private static instances = new WeakMap<Function, JiraServiceManager>();
   private apiLibPath: string;
 
+  // #2 DB centralisée + promesse d'init (attendable par les classes filles)
+  protected db?: SqlLike;
+  private initPromise?: Promise<void>;
+
   // constructeur privé => singleton
-  protected constructor(apiLibPath?: string) {
-    this.apiLibPath = apiLibPath ?? process.env.API_LIB ?? '';
-    if (!this.apiLibPath) {
-      throw new Error('API_LIB manquant (dotenv)');
+  protected constructor() {
+    try {
+      this.apiLibPath = process.env.API_LIB ?? '';
+      if (!this.apiLibPath) {
+        throw new Error("apiLibPath n'existe pas ou est non défini");
+      }
+    } catch (err) {
+      throw err;
     }
   }
 
-  static getInstance(this: typeof JiraServiceManager, apiLibPath?: string): JiraServiceManager {
-    let inst = JiraServiceManager.instances.get(this) as JiraServiceManager | undefined;
+  // ---------- Fabriques ----------
+  public static getInstance(this: typeof JiraServiceManager): JiraServiceManager {
+    let inst = JiraServiceManager.instances.get(this);
     if (!inst) {
-      const Ctor: any = this; // safe: we are inside the class hierarchy, protected ctor is callable here
-      inst = new Ctor(apiLibPath);
+      const Ctor: any = this; // safe: nous sommes dans la hiérarchie; ctor protégé ok ici
+      inst = new Ctor();
       JiraServiceManager.instances.set(this, inst!);
     }
     return inst!;
   }
 
+  // Signature sync conservée pour compatibilité statique avec les sous-classes
   public static fromEnv(this: typeof JiraServiceManager): JiraServiceManager {
-    return this.getInstance(process.env.API_LIB);
+    return this.getInstance();
   }
 
+  /**
+   * Fabrique asynchrone qui retourne une instance prête (init() terminé).
+   * À utiliser si vous avez besoin que la DB soit déjà initialisée.
+   */
+  public static async readyFromEnv(this: typeof JiraServiceManager): Promise<JiraServiceManager> {
+    const inst = this.getInstance();
+    await inst.ready();
+    return inst;
+  }
+
+  /**
+   * Permet d'attendre l'initialisation sur une instance (idempotent).
+   */
+  public async ready(): Promise<void> {
+    await this.init();
+  }
+
+  // ---------- Initialisation commune ----------
+  /**
+   * Crée et attache la base au manager (idempotent).
+   * Ici on ne crée PAS de schéma: les classes filles peuvent le faire ensuite.
+   */
+  protected async init(): Promise<void> {
+    if (this.initPromise) return this.initPromise;
+
+    this.initPromise = (async () => {
+      if (this.db) return; // déjà initialisée
+
+      // Si tu veux un fichier sur disque: new Database('bazefield.db')
+      const rawDb = new Database(); // ':memory:' par défaut
+      this.db = {
+        exec: (sql: string) => rawDb.exec(sql),
+        prepare: (sql: string) => {
+          const stmt = rawDb.prepare(sql);
+          return {
+            run: (...params: any[]) => stmt.run(...params),
+            all: <T = any>(...params: any[]) => stmt.all(...params) as T[],
+            get: <T = any>(...params: any[]) => stmt.get(...params) as T | undefined,
+          };
+        },
+      };
+    })();
+
+    return this.initPromise;
+  }
+
+  /**
+   * Accès DB pour les classes filles.
+   * Lève une erreur si la DB n'est pas prête (appelez d'abord await this.ready()).
+   */
+  protected getDb(): SqlLike {
+    if (!this.db) {
+      throw new Error('DB non initialisée. Appelez await this.ready() ou utilisez readyFromEnv().');
+    }
+    return this.db;
+  }
+
+  // ---------- Accès API Jira ----------
   private async api() {
     return ApiServiceManager.getInstance(this.apiLibPath);
   }
 
   /**
-   *
    * Liste (clé, nom) des projets selon filtres éventuels (GetProjectsQueryParams)
-   * @param params
-   * @returns
    */
   public async getProjectList(params?: Partial<GetProjectsQueryParams>): Promise<Array<JiraProject>> {
     const projects: JiraProject[] = await (await this.api()).getData('Atlassian', OPS.projectsOp, params ?? {});
@@ -115,33 +213,7 @@ export default abstract class JiraServiceManager {
   }
 
   /**
-   *
-   * @param key
-   * @param params
-   * @returns
-   */
-  public async getProjectByKey(key: string, params?: Partial<GetProjectsQueryParams>): Promise<JiraProject> {
-    const projects: JiraProject[] = await this.getProjectList(params);
-    const projet: JiraProject | undefined = projects.find((element) => element.key == key);
-    return projet as JiraProject;
-  }
-
-  /**
-   *
-   * @param id
-   * @param params
-   * @returns
-   */
-  public async getProjectById(id: string, params?: Partial<GetProjectsQueryParams>): Promise<JiraProject> {
-    const projects: JiraProject[] = await this.getProjectList(params);
-    const projet: JiraProject | undefined = projects.find((element) => element.id == id);
-    return projet as JiraProject;
-  }
-
-  /**
-   *
-   * @param params
-   * @returns
+   * Liste des champs de l'instance Jira
    */
   public async getJiraInstanceFieldList(params?: Partial<GetFieldsQueryParams>): Promise<Array<JiraInstanceField>> {
     const fields: JiraInstanceField[] = await (await this.api()).getData('Atlassian', OPS.getFields, params ?? {});
@@ -149,22 +221,19 @@ export default abstract class JiraServiceManager {
   }
 
   /**
-   *
-   * @param params
-   * @returns
+   * Liste des champs pour un ou plusieurs projets (projectIds requis)
    */
   public async getProjectFieldList(params?: Partial<GetFieldsQueryParams>): Promise<Array<JiraInstanceField>> {
     if (params && !params.projectIds) {
-      throw new Error('Au moins un ID de projet doit être fournit');
+      // correction orthographe: fourni (et non fournit)
+      throw new Error('Au moins un ID de projet doit être fourni');
     }
     const fields: JiraInstanceField[] = await (await this.api()).getData('Atlassian', OPS.getFields, params ?? {});
     return fields ?? [];
   }
 
   /**
-   *
-   * @param params
-   * @returns
+   * Recherche d'issues
    */
   public async getIssues(params?: Partial<GetIssuesQueryParams>): Promise<Array<JiraIssue>> {
     const issues: JiraIssue[] = await (await this.api()).getData('Atlassian', OPS.issuesOp, params ?? {});
@@ -172,9 +241,7 @@ export default abstract class JiraServiceManager {
   }
 
   /**
-   *
-   * @param params
-   * @returns
+   * Types d'issues pour un projet (projectId requis)
    */
   public async getIssueTypesForProject(params?: Partial<GetIssuesTypeQueryParams>): Promise<Array<IssueType>> {
     if (params && !params.projectId) {
@@ -183,7 +250,4 @@ export default abstract class JiraServiceManager {
     const issuesType: IssueType[] = await (await this.api()).getData('Atlassian', OPS.issueTypesForProject, params ?? {});
     return issuesType ?? [];
   }
-
-  // --- Pack "première heure" ----------------------------------------------
-  public async quickSnapshot(params?: Partial<GetProjectsQueryParams>) {}
 }

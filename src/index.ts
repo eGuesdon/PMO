@@ -17,16 +17,21 @@ const GetFieldsQueryParams = {};
 
 const GetProjectsQueryParams = {
   startAt: 0,
-  maxResults: 10,
-  expand: 'insight,lead',
-  status: ['live'],
+  maxResults: 100,
+  status: ['live', 'archived', 'deleted'],
+  keys: ['PBP', 'PBPD'],
+  expand: 'description,lead,issueTypes,url,projectKeys,permissions,insight',
 };
 
 async function main() {
-  //const jif: JiraInstanceField[] = await JiraServiceManager.getInstance().getJiraInstanceFieldList(GetFieldsQueryParams);
-  //const jpl: JiraProject[] = await JiraServiceManager.getInstance().getProjectList(GetProjectsQueryParams);
-  const PBPD: JiraProject = await BazefieldManager.getInstance().getProjectById('10308', GetProjectsQueryParams);
-  console.log(PBPD);
+  const bzf = await BazefieldManager.readyFromEnv(); // ⬅️ important
+  const jpl: JiraProject[] = bzf.getBZFProject();
+
+  console.log('Je suis ici');
+
+  jpl.forEach((jp) => {
+    console.log(jp.name);
+  });
 }
 
 main();

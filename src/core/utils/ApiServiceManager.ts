@@ -1,10 +1,14 @@
+import { QueryParams } from '../../JiraService/jiraApiInterfaces/QueryParams';
 import { ApiConfigService } from './ApiConfigService';
 // import fetch from 'node-fetch'; // or remove if using global fetch on Node 18+
 import type { EndpointConfig } from './VendorConfigService';
 
+/**
+ * 
 export interface QueryParams {
   [key: string]: any;
 }
+*/
 
 export class ApiServiceManager {
   private static instance: ApiServiceManager;
@@ -153,7 +157,7 @@ export class ApiServiceManager {
         const startAt: number = Number(payload?.startAt ?? 0);
         const total: number = Number(payload?.total ?? NaN);
         const valuesLen: number = Array.isArray(payload?.values) ? payload.values.length : 0;
-
+        
         // Condition d'arrêt prioritaire
         if (isLast === true) {
           break;
