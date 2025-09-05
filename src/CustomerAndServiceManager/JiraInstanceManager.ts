@@ -1,6 +1,7 @@
 // src/CustomerAndServiceManager/JiraInstanceManager.ts
 import JiraServiceManager, { JiraProject } from '../JiraService/JiraServiceManager';
-import { initProjectsSchema, upsertProject, type SqlLike, runCustomQuery } from '../JiraService/persistence/JiraDB';
+import { initProjectsSchema, upsertProject, type SqlLike, runCustomQuery, ensureAuditTables, beginSyncRun, logAuditEvent, endSyncRun } from '../JiraService/persistence/JiraDB';
+import AuditService from '../core/utils/AuditService';
 
 const AllProjectsQueryParams = {
   startAt: 0,
@@ -38,8 +39,34 @@ export default class JiraInstanceManager extends JiraServiceManager {
   public async initProjects(): Promise<void> {
     const db = this.getDb();
     initProjectsSchema(db);
-    const projects: JiraProject[] = await this.getProjectList(AllProjectsQueryParams);
-    for (const p of projects) upsertProject(db, p);
+
+    // === Audit (file + DB) for this sync run ===
+    const audit = AuditService.getInstance();
+    const { runId } = await audit.beginRun({ actor: 'JiraInstanceManager', adapter: 'jira', params: { endpoint: 'getProjects', scope: 'instance' } });
+
+    ensureAuditTables(db);
+    beginSyncRun(db, { run_id: runId, actor: 'JiraInstanceManager', adapter: 'jira', instance_id: 'default', params: { endpoint: 'getProjects', scope: 'instance' } });
+
+    try {
+      const projects: JiraProject[] = await this.getProjectList(AllProjectsQueryParams);
+      await audit.logStep(runId, 'FETCH_DONE', `Fetched ${projects.length} projects`);
+      logAuditEvent(db, { run_id: runId, step: 'FETCH_DONE', message: `Fetched ${projects.length} projects` });
+
+      let upserts = 0;
+      for (const p of projects) {
+        upsertProject(db, p);
+        upserts++;
+      }
+      await audit.logStep(runId, 'UPSERT_DONE', `Upserted ${upserts} projects`);
+      logAuditEvent(db, { run_id: runId, step: 'UPSERT_DONE', message: `Upserted ${upserts} projects` });
+
+      await audit.endRun(runId, 'SUCCESS');
+      endSyncRun(db, runId, 'SUCCESS');
+    } catch (err) {
+      await audit.endRun(runId, 'FAILURE', err);
+      endSyncRun(db, runId, 'FAILURE', err);
+      throw err;
+    }
   }
 
   // lecture typée des projets (avec parsing JSON)

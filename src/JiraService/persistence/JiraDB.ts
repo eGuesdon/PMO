@@ -1,6 +1,9 @@
-// src/CustomerAndServiceManager/BazefieldDB.ts
-
 import { JiraProject } from '../JiraServiceManager';
+
+function runExec(db: any, sql: string, ...params: any[]): void {
+  const stmt = db.prepare(sql);
+  stmt.run(...params);
+}
 
 // Adaptateur minimal compatible jqlite / better-sqlite3
 export interface SqlLike {
@@ -89,4 +92,74 @@ export function upsertProject(db: SqlLike, p: JiraProject): void {
  */
 export function runCustomQuery<T = any>(db: SqlLike, sql: string, ...params: any[]): T[] {
   return db.prepare(sql).all<T>(...params);
+}
+
+// Idempotent: crée les tables si absentes
+export function ensureAuditTables(db: any): void {
+  runExec(
+    db,
+    `CREATE TABLE IF NOT EXISTS audit_sync_run (
+      run_id TEXT PRIMARY KEY,
+      started_at_utc TEXT NOT NULL,
+      ended_at_utc TEXT,
+      actor TEXT,
+      adapter TEXT,
+      instance_id TEXT,
+      params_json TEXT,
+      git_commit TEXT,
+      status TEXT,
+      error_json TEXT
+    );`,
+  );
+  runExec(
+    db,
+    `CREATE TABLE IF NOT EXISTS audit_event (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      run_id TEXT,
+      ts_utc TEXT NOT NULL,
+      step TEXT,
+      severity TEXT,
+      message TEXT,
+      details_json TEXT,
+      FOREIGN KEY(run_id) REFERENCES audit_sync_run(run_id)
+    );`,
+  );
+}
+
+export function beginSyncRun(db: any, info: { run_id: string; actor: string; adapter?: string; instance_id?: string; params?: any; git_commit?: string }): string {
+  ensureAuditTables(db);
+  const paramsJson = info.params ? JSON.stringify(info.params) : null;
+  runExec(
+    db,
+    `INSERT OR REPLACE INTO audit_sync_run (run_id, started_at_utc, actor, adapter, instance_id, params_json, git_commit, status)
+     VALUES (?, datetime('now'), ?, ?, ?, ?, ?, 'STARTED')`,
+    info.run_id,
+    info.actor,
+    info.adapter ?? null,
+    info.instance_id ?? null,
+    paramsJson,
+    info.git_commit ?? null,
+  );
+  return info.run_id;
+}
+
+export function logAuditEvent(db: any, ev: { run_id: string; step: string; severity?: 'INFO' | 'WARN' | 'ERROR'; message?: string; details?: any }): void {
+  ensureAuditTables(db);
+  const detailsJson = ev.details ? JSON.stringify(ev.details) : null;
+  runExec(
+    db,
+    `INSERT INTO audit_event (run_id, ts_utc, step, severity, message, details_json)
+     VALUES (?, datetime('now'), ?, ?, ?, ?)`,
+    ev.run_id,
+    ev.step,
+    ev.severity ?? 'INFO',
+    ev.message ?? null,
+    detailsJson,
+  );
+}
+
+export function endSyncRun(db: any, run_id: string, status: 'SUCCESS' | 'FAILURE', error?: unknown): void {
+  ensureAuditTables(db);
+  const errJson = error ? JSON.stringify(error instanceof Error ? { name: error.name, message: error.message, stack: error.stack } : error) : null;
+  runExec(db, `UPDATE audit_sync_run SET ended_at_utc = datetime('now'), status = ?, error_json = ? WHERE run_id = ?`, status, errJson, run_id);
 }

@@ -1,67 +1,54 @@
-import * as fsp from 'fs/promises';
-import * as fs from 'fs';
+// src/core/utils/AuditService.ts
+import fs from 'fs';
+import path from 'path';
 import { createHmac, randomUUID } from 'crypto';
-import * as path from 'path';
 
-// Stable JSON stringify to ensure deterministic HMAC across identical objects
+/** Transport d'audit générique */
+export interface AuditTransport {
+  write(entry: unknown): Promise<void>;
+}
+
+/** Transport fichier (JSONL) – crée le dossier si besoin */
+export class FileAuditTransport implements AuditTransport {
+  private stream: fs.WriteStream;
+
+  constructor(private filePath: string) {
+    const dir = path.dirname(filePath);
+    try {
+      fs.mkdirSync(dir, { recursive: true });
+    } catch {}
+    this.stream = fs.createWriteStream(this.filePath, { flags: 'a' });
+  }
+
+  async write(entry: unknown): Promise<void> {
+    this.stream.write(JSON.stringify(entry) + '\n');
+  }
+}
+
+/** Entrée de log (canonique) */
+export interface AuditEvent {
+  timestamp: string; // ISO
+  actor?: string;
+  event: string; // SYNC_RUN_START, SYNC_STEP, SYNC_RUN_END, ...
+  status?: string; // STARTED, INFO, SUCCESS, FAILURE, ...
+  resource?: string;
+  details?: any;
+  hmac?: string; // signature HMAC-SHA256 (si clé fournie)
+}
+
+/** JSON stable (ordre des clés trié) pour un HMAC déterministe */
 function stableStringify(value: any): string {
   if (value === null || typeof value !== 'object') return JSON.stringify(value);
   if (Array.isArray(value)) return `[${value.map(stableStringify).join(',')}]`;
   const keys = Object.keys(value).sort();
-  const props = keys.map((k) => `${JSON.stringify(k)}:${stableStringify((value as any)[k])}`);
+  const props = keys.map((k) => `${JSON.stringify(k)}:${stableStringify(value[k])}`);
   return `{${props.join(',')}}`;
 }
 
-/**
- * Structure d’un événement d’audit.
- */
-export interface AuditEvent {
-  timestamp: string; // ISO 8601 UTC
-  actor: string; // identifiant du service ou de l’utilisateur
-  event: string; // type d’action (p.ex. "FILE_LOADED")
-  resource?: string; // cible (chemin de fichier, URL, etc.)
-  status?: string; // "SUCCESS" | "FAILURE"
-  details?: any; // champ libre pour infos additionnelles
-  hmac?: string; // HMAC-SHA256 (champ canonique)
-}
-
-/**
- * Interface d’un transport d’audit (fichier, syslog, DB…).
- */
-export interface AuditTransport {
-  /**
-   * Envoie une entrée d’audit. Ne doit jamais rejeter (erreurs internes capturées).
-   */
-  log(event: AuditEvent): Promise<void>;
-}
-
-/**
- * Transport de base : écrit en JSONL dans un fichier append-only.
- */
-export class FileAuditTransport implements AuditTransport {
-  private filePath: string;
-
-  constructor(filePath: string) {
-    const dir = path.dirname(filePath);
-    fs.mkdirSync(dir, { recursive: true });
-    this.filePath = filePath;
-  }
-
-  async log(event: AuditEvent): Promise<void> {
-    try {
-      await fsp.appendFile(this.filePath, JSON.stringify(event) + '\n', 'utf-8');
-    } catch (err) {
-      console.error('AuditTransport(File) error:', err);
-    }
-  }
-}
-
-/**
- * Service d’audit singleton.
- */
+/** Service d'audit (singleton) */
 export class AuditService {
-  private static instance: AuditService;
-  private transports: AuditTransport[];
+  private static instance?: AuditService;
+  private transports: AuditTransport[] = [];
   private hmacKey?: string;
 
   private constructor(transports: AuditTransport[], hmacKey?: string) {
@@ -70,83 +57,86 @@ export class AuditService {
   }
 
   /**
-   * Renvoie l’unique instance.
-   * @param transports Liste des transports à utiliser (ex. [new FileAuditTransport(...)])
-   * @param hmacKey   Clé secrète pour générer la signature HMAC (optionnel)
+   * Récupère l'instance. Au premier appel, il faut fournir au moins un transport.
+   * Si aucune clé n'est fournie, on regarde process.env.AUDIT_HMAC_KEY.
+   * Si l'instance existante n'a pas de clé et qu'une clé arrive plus tard, on l’enregistre.
    */
   public static getInstance(transports?: AuditTransport[], hmacKey?: string): AuditService {
-    // Prefer explicit key, else fallback to environment
     const effectiveKey = hmacKey ?? process.env.AUDIT_HMAC_KEY;
 
     if (!AuditService.instance) {
-      if (!transports) {
-        throw new Error('AuditService must be initialized with transports');
+      if (!transports || transports.length === 0) {
+        throw new Error('AuditService must be initialized with transports at first call');
       }
       AuditService.instance = new AuditService(transports, effectiveKey);
       return AuditService.instance;
     }
 
-    // Refresh the key if instance had none but we now have one (explicit or via env)
+    // Mise à jour paresseuse de la clé si l’instance n’en avait pas
     if (!AuditService.instance.hmacKey && effectiveKey) {
       AuditService.instance.hmacKey = effectiveKey;
+    }
+    // Optionnel : ajouter dynamiquement des transports supplémentaires
+    if (transports && transports.length > 0) {
+      for (const t of transports) {
+        if (!AuditService.instance.transports.includes(t)) {
+          AuditService.instance.transports.push(t);
+        }
+      }
     }
     return AuditService.instance;
   }
 
   /**
-   * Initialise l'audit à partir des variables d'environnement.
-   * Utilise AUDIT_ENABLED, AUDIT_LOG_FILE et AUDIT_HMAC_KEY. Ne fait rien si AUDIT_ENABLED != '1'.
+   * Configuration simplifiée via variables d’environnement.
+   * Utilise AUDIT_ENABLED, AUDIT_LOG_FILE, AUDIT_HMAC_KEY.
+   * Ne fait rien si AUDIT_ENABLED !== '1'.
    */
   public static configureFromEnv(transports?: AuditTransport[]): void {
     if (process.env.AUDIT_ENABLED !== '1') return;
     const logFile = process.env.AUDIT_LOG_FILE || 'logs/audit.log';
-    const t = transports ?? [new FileAuditTransport(logFile)];
-    AuditService.getInstance(t, process.env.AUDIT_HMAC_KEY);
+    const ts = transports && transports.length > 0 ? transports : [new FileAuditTransport(logFile)];
+    AuditService.getInstance(ts, process.env.AUDIT_HMAC_KEY);
   }
 
-  /**
-   * Enregistre un événement d’audit.
-   */
-  public async log(
-    event: Omit<AuditEvent, 'timestamp'> & {
-      timestamp?: never;
-    },
-  ): Promise<void> {
-    const entry: AuditEvent = {
+  /** Écrit une entrée */
+  public async log(event: Omit<AuditEvent, 'timestamp'> & { timestamp?: never }): Promise<void> {
+    const base: AuditEvent = {
       timestamp: new Date().toISOString(),
-      ...event,
+      actor: event.actor,
+      event: event.event,
+      status: event.status,
+      resource: event.resource,
+      details: event.details,
     };
 
-    // Calcul de la signature / hachage (déterministe) si une clé est fournie
+    // Signe sans inclure le champ hmac lui-même
     if (this.hmacKey) {
-      // Ne signe pas le champ hmac lui-même
-      const { hmac: _h, ...toSign } = entry as any;
+      const { hmac: _h, ...toSign } = base as any;
       const payload = stableStringify(toSign);
       const mac = createHmac('sha256', this.hmacKey).update(payload).digest('hex');
-      (entry as any).hmac = mac; // champ canonique
+      (base as any).hmac = mac;
     }
 
-    // Envoi à tous les transports et attente de leur complétion
-    await Promise.all(this.transports.map((t) => t.log(entry).catch((err) => console.error('AuditService transport error:', err))));
+    // Diffuse à tous les transports
+    await Promise.all(this.transports.map((t) => t.write(base)));
   }
 
-  /**
-   * Démarre une exécution (run) et retourne un run_id corrélable.
-   * Journalise SYNC_RUN_START.
-   */
+  /** Démarre un run et retourne runId */
   public async beginRun(info: { actor: string; adapter?: string; instanceId?: string; params?: any }): Promise<{ runId: string }> {
     const runId = typeof randomUUID === 'function' ? randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
     await this.log({
       actor: info.actor,
       event: 'SYNC_RUN_START',
-      resource: info.adapter ? `${info.adapter}${info.instanceId ? ':' + info.instanceId : ''}` : undefined,
       status: 'STARTED',
+      resource: info.adapter ? `${info.adapter}${info.instanceId ? ':' + info.instanceId : ''}` : undefined,
       details: { params: info.params, adapter: info.adapter, instanceId: info.instanceId, run_id: runId },
     });
     return { runId };
   }
 
-  /** Journalise une étape intermédiaire liée à un run (SYNC_STEP). */
+  /** Étape intermédiaire liée à un run */
   public async logStep(runId: string | undefined, step: string, message?: string, details?: any): Promise<void> {
     if (!runId) return;
     await this.log({
@@ -157,7 +147,7 @@ export class AuditService {
     });
   }
 
-  /** Termine un run (SYNC_RUN_END) avec statut final. */
+  /** Termine un run */
   public async endRun(runId: string | undefined, status: 'SUCCESS' | 'FAILURE', error?: unknown): Promise<void> {
     if (!runId) return;
     await this.log({
@@ -171,3 +161,5 @@ export class AuditService {
     });
   }
 }
+
+export default AuditService;
