@@ -2,6 +2,7 @@ import BazefieldManager from './CustomerAndServiceManager/BazefieldManager';
 import JiraInstanceManager from './CustomerAndServiceManager/JiraInstanceManager';
 import { CountIssuesQueryParams, GetIssuesQueryParams } from './JiraService/jiraApiInterfaces/QueryParams';
 import JiraServiceManager, { JiraProject } from './JiraService/JiraServiceManager';
+import 'dotenv/config';
 
 const jql: string = 'project = PBPD';
 

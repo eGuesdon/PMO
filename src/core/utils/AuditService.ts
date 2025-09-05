@@ -3,6 +3,15 @@ import * as fs from 'fs';
 import { createHmac, randomUUID } from 'crypto';
 import * as path from 'path';
 
+// Stable JSON stringify to ensure deterministic HMAC across identical objects
+function stableStringify(value: any): string {
+  if (value === null || typeof value !== 'object') return JSON.stringify(value);
+  if (Array.isArray(value)) return `[${value.map(stableStringify).join(',')}]`;
+  const keys = Object.keys(value).sort();
+  const props = keys.map((k) => `${JSON.stringify(k)}:${stableStringify((value as any)[k])}`);
+  return `{${props.join(',')}}`;
+}
+
 /**
  * Structure d’un événement d’audit.
  */
@@ -13,7 +22,7 @@ export interface AuditEvent {
   resource?: string; // cible (chemin de fichier, URL, etc.)
   status?: string; // "SUCCESS" | "FAILURE"
   details?: any; // champ libre pour infos additionnelles
-  signature?: string; // HMAC-SHA256 de la ligne JSONL (pour immuabilité)
+  hmac?: string; // HMAC-SHA256 (champ canonique)
 }
 
 /**
@@ -66,22 +75,41 @@ export class AuditService {
    * @param hmacKey   Clé secrète pour générer la signature HMAC (optionnel)
    */
   public static getInstance(transports?: AuditTransport[], hmacKey?: string): AuditService {
+    // Prefer explicit key, else fallback to environment
+    const effectiveKey = hmacKey ?? process.env.AUDIT_HMAC_KEY;
+
     if (!AuditService.instance) {
       if (!transports) {
         throw new Error('AuditService must be initialized with transports');
       }
-      AuditService.instance = new AuditService(transports, hmacKey);
+      AuditService.instance = new AuditService(transports, effectiveKey);
+      return AuditService.instance;
+    }
+
+    // Refresh the key if instance had none but we now have one (explicit or via env)
+    if (!AuditService.instance.hmacKey && effectiveKey) {
+      AuditService.instance.hmacKey = effectiveKey;
     }
     return AuditService.instance;
+  }
+
+  /**
+   * Initialise l'audit à partir des variables d'environnement.
+   * Utilise AUDIT_ENABLED, AUDIT_LOG_FILE et AUDIT_HMAC_KEY. Ne fait rien si AUDIT_ENABLED != '1'.
+   */
+  public static configureFromEnv(transports?: AuditTransport[]): void {
+    if (process.env.AUDIT_ENABLED !== '1') return;
+    const logFile = process.env.AUDIT_LOG_FILE || 'logs/audit.log';
+    const t = transports ?? [new FileAuditTransport(logFile)];
+    AuditService.getInstance(t, process.env.AUDIT_HMAC_KEY);
   }
 
   /**
    * Enregistre un événement d’audit.
    */
   public async log(
-    event: Omit<AuditEvent, 'timestamp' | 'signature'> & {
+    event: Omit<AuditEvent, 'timestamp'> & {
       timestamp?: never;
-      signature?: never;
     },
   ): Promise<void> {
     const entry: AuditEvent = {
@@ -89,11 +117,13 @@ export class AuditService {
       ...event,
     };
 
-    // Calcul de la signature
+    // Calcul de la signature / hachage (déterministe) si une clé est fournie
     if (this.hmacKey) {
-      const hmac = createHmac('sha256', this.hmacKey);
-      hmac.update(JSON.stringify(entry));
-      entry.signature = hmac.digest('hex');
+      // Ne signe pas le champ hmac lui-même
+      const { hmac: _h, ...toSign } = entry as any;
+      const payload = stableStringify(toSign);
+      const mac = createHmac('sha256', this.hmacKey).update(payload).digest('hex');
+      (entry as any).hmac = mac; // champ canonique
     }
 
     // Envoi à tous les transports et attente de leur complétion
