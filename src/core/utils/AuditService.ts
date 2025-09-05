@@ -65,24 +65,23 @@ export class AuditService {
     const effectiveKey = hmacKey ?? process.env.AUDIT_HMAC_KEY;
 
     if (!AuditService.instance) {
+      // 🚨 fallback si rien n’est passé et que AUDIT_ENABLED=1
+      if ((!transports || transports.length === 0) && process.env.AUDIT_ENABLED === '1') {
+        const logFile = process.env.AUDIT_LOG_FILE || 'logs/audit.log';
+        transports = [new FileAuditTransport(logFile)];
+      }
+
       if (!transports || transports.length === 0) {
         throw new Error('AuditService must be initialized with transports at first call');
       }
+
       AuditService.instance = new AuditService(transports, effectiveKey);
       return AuditService.instance;
     }
 
-    // Mise à jour paresseuse de la clé si l’instance n’en avait pas
+    // mise à jour paresseuse si pas de clé
     if (!AuditService.instance.hmacKey && effectiveKey) {
       AuditService.instance.hmacKey = effectiveKey;
-    }
-    // Optionnel : ajouter dynamiquement des transports supplémentaires
-    if (transports && transports.length > 0) {
-      for (const t of transports) {
-        if (!AuditService.instance.transports.includes(t)) {
-          AuditService.instance.transports.push(t);
-        }
-      }
     }
     return AuditService.instance;
   }
