@@ -21,7 +21,12 @@ export class FileAuditTransport implements AuditTransport {
   }
 
   async write(entry: unknown): Promise<void> {
-    this.stream.write(JSON.stringify(entry) + '\n');
+    return new Promise((resolve, reject) => {
+      this.stream.write(JSON.stringify(entry) + '\n', (err) => {
+        if (err) reject(err);
+        else resolve();
+      });
+    });
   }
 }
 
@@ -32,16 +37,18 @@ export interface AuditEvent {
   event: string; // SYNC_RUN_START, SYNC_STEP, SYNC_RUN_END, ...
   status?: string; // STARTED, INFO, SUCCESS, FAILURE, ...
   resource?: string;
-  details?: any;
+  details?: Record<string, unknown> | null;
   hmac?: string; // signature HMAC-SHA256 (si clé fournie)
 }
 
-/** JSON stable (ordre des clés trié) pour un HMAC déterministe */
-function stableStringify(value: any): string {
+/** JSON stable (ordre des clés trié) pour un HMAC déterministe, gère les cycles */
+function stableStringify(value: any, seen = new WeakSet()): string {
   if (value === null || typeof value !== 'object') return JSON.stringify(value);
-  if (Array.isArray(value)) return `[${value.map(stableStringify).join(',')}]`;
+  if (seen.has(value)) return '"[Circular]"';
+  seen.add(value);
+  if (Array.isArray(value)) return `[${value.map(v => stableStringify(v, seen)).join(',')}]`;
   const keys = Object.keys(value).sort();
-  const props = keys.map((k) => `${JSON.stringify(k)}:${stableStringify(value[k])}`);
+  const props = keys.map((k) => `${JSON.stringify(k)}:${stableStringify(value[k], seen)}`);
   return `{${props.join(',')}}`;
 }
 
@@ -50,6 +57,11 @@ export class AuditService {
   private static instance?: AuditService;
   private transports: AuditTransport[] = [];
   private hmacKey?: string;
+
+  // Ajout d'une méthode pour reset le singleton (utile pour les tests)
+  public static resetInstance(): void {
+    AuditService.instance = undefined;
+  }
 
   private constructor(transports: AuditTransport[], hmacKey?: string) {
     this.transports = transports;
@@ -106,7 +118,7 @@ export class AuditService {
       event: event.event,
       status: event.status,
       resource: event.resource,
-      details: event.details,
+      details: event.details ?? null,
     };
 
     // Signe sans inclure le champ hmac lui-même
@@ -117,8 +129,14 @@ export class AuditService {
       (base as any).hmac = mac;
     }
 
-    // Diffuse à tous les transports
-    await Promise.all(this.transports.map((t) => t.write(base)));
+    // Diffuse à tous les transports, mais n'arrête pas si un transport échoue
+    const results = await Promise.allSettled(this.transports.map((t) => t.write(base)));
+    const errors = results.filter(r => r.status === 'rejected');
+    if (errors.length > 0) {
+      // On peut loguer ou remonter l'erreur selon le besoin
+      // Ici on lève une erreur globale si au moins un transport a échoué
+      throw new Error(`Erreur(s) lors de l'écriture dans les transports d'audit: ${errors.map(e => (e as PromiseRejectedResult).reason).join('; ')}`);
+    }
   }
 
   /** Démarre un run et retourne runId */

@@ -1,0 +1,3 @@
+{"timestamp":"2025-09-05T16:53:03.982Z","actor":"test","event":"SYNC_RUN_START","status":"STARTED","resource":"unit","details":{"adapter":"unit","run_id":"e2c7638d-d6ea-42f4-bd4e-0b37829d7ad9"},"hmac":"659ab23b2840382c0db58bf87443567388abaca4a0844a8fe29795c8349738d7"}
+{"timestamp":"2025-09-05T16:53:03.982Z","actor":"system","event":"SYNC_STEP","status":"INFO","details":{"step":"STEP","message":"hello","run_id":"e2c7638d-d6ea-42f4-bd4e-0b37829d7ad9"},"hmac":"235dc22ee4d297743d84d0617c53f4ac3fc1f95d246260aef8dc10b47aaaeeb0"}
+{"timestamp":"2025-09-05T16:53:03.983Z","actor":"system","event":"SYNC_RUN_END","status":"SUCCESS","details":{"run_id":"e2c7638d-d6ea-42f4-bd4e-0b37829d7ad9","error":null},"hmac":"904f965a239decfb8b41f8de91a2a702dbe1b939a5d43918a706897ac584e498"}
