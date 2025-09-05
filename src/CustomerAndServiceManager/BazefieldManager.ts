@@ -1,5 +1,5 @@
 import JiraServiceManager, { JiraProject } from '../JiraService/JiraServiceManager';
-import { initProjectsSchema, upsertProject, type SqlLike, runCustomQuery } from './BazefieldDB';
+import { initProjectsSchema, upsertProject, type SqlLike, runCustomQuery } from '../JiraService/persistence/JiraDB';
 
 // Paramètres utilisés pour la récupération des projets BZF
 const GetProjectsQueryParams = {

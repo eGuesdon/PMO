@@ -1,4 +1,5 @@
 import BazefieldManager from './CustomerAndServiceManager/BazefieldManager';
+import JiraInstanceManager from './CustomerAndServiceManager/JiraInstanceManager';
 import { CountIssuesQueryParams, GetIssuesQueryParams } from './JiraService/jiraApiInterfaces/QueryParams';
 import JiraServiceManager, { JiraProject } from './JiraService/JiraServiceManager';
 
@@ -27,11 +28,31 @@ async function main() {
   const bzf = await BazefieldManager.readyFromEnv(); // ⬅️ important
   const jpl: JiraProject[] = bzf.getBZFProject();
 
-  console.log('Je suis ici');
-
   jpl.forEach((jp) => {
-    console.log(jp.name);
+    console.log(jp.key + ' ' + jp.id + ' ' + jp.name);
   });
 }
 
-main();
+async function main2() {
+  const instMgr = await JiraInstanceManager.readyFromEnv();
+  const projects = instMgr.getInstanceProjects(); // JiraProject[]
+  const totalProj = instMgr.countProjects();
+  const byType = instMgr.countProjectsByType();
+  const totalIssues = instMgr.totalIssuesFromInsight();
+  const lastUpd = instMgr.lastIssueUpdateTime();
+  const withLead = instMgr.countProjectsWithActiveLead();
+  const activeProject = instMgr.countActiveProjects();
+  const projectHistory = instMgr.projectCreationHistory();
+
+  console.log(instMgr);
+  //console.log(projects);
+  console.log(totalProj);
+  console.log(byType);
+  console.log(totalIssues);
+  console.log(lastUpd);
+  console.log(withLead);
+  console.log(activeProject);
+  console.log(projectHistory);
+}
+
+main2();

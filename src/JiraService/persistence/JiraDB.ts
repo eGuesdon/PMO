@@ -1,6 +1,6 @@
 // src/CustomerAndServiceManager/BazefieldDB.ts
 
-import { JiraProject } from '../JiraService/JiraServiceManager';
+import { JiraProject } from '../JiraServiceManager';
 
 // Adaptateur minimal compatible jqlite / better-sqlite3
 export interface SqlLike {
