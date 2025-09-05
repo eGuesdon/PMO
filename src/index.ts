@@ -57,4 +57,4 @@ async function main2() {
   console.log(projectHistory);
 }
 
-main2();
+main();

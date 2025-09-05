@@ -1,5 +1,6 @@
 import JiraServiceManager, { JiraProject } from '../JiraService/JiraServiceManager';
-import { initProjectsSchema, upsertProject, type SqlLike, runCustomQuery } from '../JiraService/persistence/JiraDB';
+import { initProjectsSchema, upsertProject, type SqlLike, runCustomQuery, ensureAuditTables, beginSyncRun, logAuditEvent, endSyncRun } from '../JiraService/persistence/JiraDB';
+import AuditService from '../core/utils/AuditService';
 
 // Paramètres utilisés pour la récupération des projets BZF
 const GetProjectsQueryParams = {
@@ -47,10 +48,46 @@ export default class BazefieldManager extends JiraServiceManager {
     const db = this.getDb(); // hérité de JiraServiceManager
     // 1) créer le schéma (idempotent)
     initProjectsSchema(db);
-    // 2) récupérer les projets Jira
-    const projects: JiraProject[] = await this.getProjectList(GetProjectsQueryParams);
-    // 3) upsert en base
-    for (const p of projects) upsertProject(db, p);
+
+    // === Audit (file + DB) pour cette exécution ===
+    const audit = AuditService.getInstance(); // auto-fallback si AUDIT_ENABLED=1
+    const { runId } = await audit.beginRun({
+      actor: 'BazefieldManager',
+      adapter: 'bazefield',
+      params: { endpoint: 'getProjects', scope: 'instance' },
+    });
+
+    ensureAuditTables(db);
+    beginSyncRun(db, {
+      run_id: runId,
+      actor: 'BazefieldManager',
+      adapter: 'bazefield',
+      instance_id: 'default',
+      params: { endpoint: 'getProjects', scope: 'instance' },
+    });
+
+    try {
+      // 2) récupérer les projets Jira
+      const projects: JiraProject[] = await this.getProjectList(GetProjectsQueryParams);
+      await audit.logStep(runId, 'FETCH_DONE', `Fetched ${projects.length} projects`);
+      logAuditEvent(db, { run_id: runId, step: 'FETCH_DONE', message: `Fetched ${projects.length} projects` });
+
+      // 3) upsert en base
+      let upserts = 0;
+      for (const p of projects) {
+        upsertProject(db, p);
+        upserts++;
+      }
+      await audit.logStep(runId, 'UPSERT_DONE', `Upserted ${upserts} projects`);
+      logAuditEvent(db, { run_id: runId, step: 'UPSERT_DONE', message: `Upserted ${upserts} projects` });
+
+      await audit.endRun(runId, 'SUCCESS');
+      endSyncRun(db, runId, 'SUCCESS');
+    } catch (err) {
+      await audit.endRun(runId, 'FAILURE', err);
+      endSyncRun(db, runId, 'FAILURE', err);
+      throw err;
+    }
   }
 
   /**
