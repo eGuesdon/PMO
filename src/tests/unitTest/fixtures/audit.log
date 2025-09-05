@@ -1,2 +1,5 @@
-{"timestamp":"2025-08-05T13:13:32.042Z","actor":"test","event":"TEST_EVENT","resource":"res1","status":"SUCCESS","details":{"foo":"bar"}}
-{"timestamp":"2025-08-05T13:13:32.045Z","actor":"test2","event":"TEST_HMAC","resource":"res2","signature":"fa2df9002bc2082c952ff373f2a7f93ca5708aece309fdd30cb27f74917d03e6"}
+{"timestamp":"2025-09-05T09:12:05.146Z","actor":"test","event":"TEST_EVENT","resource":"res1","status":"SUCCESS","details":{"foo":"bar"}}
+{"timestamp":"2025-09-05T09:12:05.147Z","actor":"test2","event":"TEST_HMAC","resource":"res2","signature":"d46960355ce8d36d916e83424ccb5920363f7034ef311be022508fec3a76c169"}
+{"timestamp":"2025-09-05T09:12:05.151Z","actor":"tester","event":"SYNC_RUN_START","resource":"jira:dev","status":"STARTED","details":{"params":{"foo":"bar"},"adapter":"jira","instanceId":"dev","run_id":"bf9e6da5-717c-40b8-8d96-ea444905b97b"},"signature":"1e7e9c112ce76aed4b3974183d41cd40e888de9f1dba3ed952af78adfb628d33"}
+{"timestamp":"2025-09-05T09:12:05.151Z","actor":"system","event":"SYNC_STEP","status":"INFO","details":{"step":"STEP_ONE","message":"doing something","run_id":"bf9e6da5-717c-40b8-8d96-ea444905b97b","extra":1},"signature":"bf9ffcff93861105599e29235bc68086e6a17f6526b319a69c6b3c6e62b7aee4"}
+{"timestamp":"2025-09-05T09:12:05.152Z","actor":"system","event":"SYNC_RUN_END","status":"SUCCESS","details":{"run_id":"bf9e6da5-717c-40b8-8d96-ea444905b97b","error":null},"signature":"48ac84fb739f803ad8d9777ab8d994fa33d557fa637729a26ed091fe26dec424"}

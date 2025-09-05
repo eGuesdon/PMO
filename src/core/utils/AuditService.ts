@@ -1,6 +1,6 @@
 import * as fsp from 'fs/promises';
 import * as fs from 'fs';
-import { createHmac } from 'crypto';
+import { createHmac, randomUUID } from 'crypto';
 import * as path from 'path';
 
 /**
@@ -98,5 +98,46 @@ export class AuditService {
 
     // Envoi à tous les transports et attente de leur complétion
     await Promise.all(this.transports.map((t) => t.log(entry).catch((err) => console.error('AuditService transport error:', err))));
+  }
+
+  /**
+   * Démarre une exécution (run) et retourne un run_id corrélable.
+   * Journalise SYNC_RUN_START.
+   */
+  public async beginRun(info: { actor: string; adapter?: string; instanceId?: string; params?: any }): Promise<{ runId: string }> {
+    const runId = typeof randomUUID === 'function' ? randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    await this.log({
+      actor: info.actor,
+      event: 'SYNC_RUN_START',
+      resource: info.adapter ? `${info.adapter}${info.instanceId ? ':' + info.instanceId : ''}` : undefined,
+      status: 'STARTED',
+      details: { params: info.params, adapter: info.adapter, instanceId: info.instanceId, run_id: runId },
+    });
+    return { runId };
+  }
+
+  /** Journalise une étape intermédiaire liée à un run (SYNC_STEP). */
+  public async logStep(runId: string | undefined, step: string, message?: string, details?: any): Promise<void> {
+    if (!runId) return;
+    await this.log({
+      actor: 'system',
+      event: 'SYNC_STEP',
+      status: 'INFO',
+      details: { step, message, run_id: runId, ...(details ?? {}) },
+    });
+  }
+
+  /** Termine un run (SYNC_RUN_END) avec statut final. */
+  public async endRun(runId: string | undefined, status: 'SUCCESS' | 'FAILURE', error?: unknown): Promise<void> {
+    if (!runId) return;
+    await this.log({
+      actor: 'system',
+      event: 'SYNC_RUN_END',
+      status,
+      details: {
+        run_id: runId,
+        error: error instanceof Error ? { name: error.name, message: error.message, stack: error.stack } : (error ?? null),
+      },
+    });
   }
 }

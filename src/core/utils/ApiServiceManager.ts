@@ -2,6 +2,7 @@ import { QueryParams } from '../../JiraService/jiraApiInterfaces/QueryParams';
 import { ApiConfigService } from './ApiConfigService';
 // import fetch from 'node-fetch'; // or remove if using global fetch on Node 18+
 import type { EndpointConfig } from './VendorConfigService';
+import { AuditService, FileAuditTransport } from './AuditService';
 
 /**
  * 
@@ -13,8 +14,17 @@ export interface QueryParams {
 export class ApiServiceManager {
   private static instance: ApiServiceManager;
   private apiConfig: ApiConfigService;
+  private audit?: AuditService;
 
   private constructor(apiConfig: ApiConfigService) {
+    try {
+      if (process.env.AUDIT_ENABLED === '1') {
+        const logFile = process.env.AUDIT_LOG_FILE || 'logs/audit.log';
+        this.audit = AuditService.getInstance([new FileAuditTransport(logFile)], process.env.AUDIT_HMAC_KEY);
+      }
+    } catch {
+      // no-op: l'audit ne doit jamais casser le chemin d'exécution
+    }
     this.apiConfig = apiConfig;
   }
 
@@ -33,20 +43,29 @@ export class ApiServiceManager {
    * @param params Paramètres de requête (query/body)
    */
   public async getData<P extends QueryParams = QueryParams>(vendorName: string, endpointName: string, params: P): Promise<any[]> {
-    // 1) Récupérer la configuration de l'endpoint
     const endpoint: EndpointConfig | undefined = await this.apiConfig.getEndpoint(vendorName, endpointName);
     if (!endpoint) {
       throw new Error(`Endpoint '${endpointName}' introuvable pour le vendor '${vendorName}'.`);
     }
 
-    // 2) Construire la première requête
-    const requestConfig = await this.buildRequestConfig(vendorName, endpoint, params);
+    const run = this.audit ? await this.audit.beginRun({ actor: 'ApiServiceManager', adapter: vendorName, params: { endpoint: endpointName } }) : undefined;
+    let allData: any[] = [];
+    try {
+      const requestConfig = await this.buildRequestConfig(vendorName, endpoint, params);
+      allData = await this.handlePagination(requestConfig, endpoint, vendorName);
 
-    // 3) Gérer la pagination
-    const allData = await this.handlePagination(requestConfig, endpoint, vendorName);
+      await this.audit?.logStep(run?.runId, 'FETCH_DONE', `Fetched ${Array.isArray(allData) ? allData.length : 0} items`, {
+        endpoint: endpointName,
+        vendor: vendorName,
+      });
 
-    // 4) Décoder les données (ex: dates)
-    return this.decodeData(allData);
+      const decoded = this.decodeData(allData);
+      await this.audit?.endRun(run?.runId, 'SUCCESS');
+      return decoded;
+    } catch (err) {
+      await this.audit?.endRun(run?.runId, 'FAILURE', err);
+      throw err;
+    }
   }
 
   /**
@@ -157,7 +176,7 @@ export class ApiServiceManager {
         const startAt: number = Number(payload?.startAt ?? 0);
         const total: number = Number(payload?.total ?? NaN);
         const valuesLen: number = Array.isArray(payload?.values) ? payload.values.length : 0;
-        
+
         // Condition d'arrêt prioritaire
         if (isLast === true) {
           break;
